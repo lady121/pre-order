@@ -1,0 +1,1141 @@
+<title>Professor Fern's Greenhouse</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: lesson rail | teaching stage (teacher + diagram board, caption, controls) | notebook & ask panel */
+:root {
+  --bg: #eaf1eb; --panel: #ffffff; --panel-2: #f3f7f3; --fg: #132219; --muted: #536659; --line: #d0dcd2;
+  --green: #2a7a4b; --green-ink: #1c5a36; --green-soft: #d6eedd; --pollen: #e3a400; --pollen-soft: #fbefc9;
+  --laser: #e4572e; --glow: #f2b705; --good: #23864f; --bad: #c2412d;
+  --board: #f8fbf7; --ink: #2a3a30; --soil: #cfae84; --soil-d: #b28f63; --root: #8a5a33; --stem: #4c9a48;
+  --leaf: #63bb5f; --leaf-d: #2f7d32; --petal: #f4a3bf; --petal-d: #c95b85; --anther: #f2c230; --pistil: #9bd06e;
+  --cell-wall: #a8d695; --cyto: #edf7e8; --membrane: #e79a3c; --vacuole: #c3e4f3; --nucleus: #b98fd8; --nucleolus: #7b4fa3;
+  --chloro: #43a047; --mito: #f0a35b; --purple: #8a4fca; --whitefl: #ffffff; --card: #ffffff; --water: #69b4de; --agar: #f3e3a1; --glass: #e3f1f6;
+  --skin: #f8dac6; --hair: #24443a; --hair-hi: #3e6e5a; --coat: #fbfdfb; --coat-line: #b9c8bd; --iris: #2f8f6a; --mouth: #b4465a; --blush: #f39ab0; --shirt: #2a7a4b;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d1611; --panel: #142019; --panel-2: #1a291f; --fg: #e4eee6; --muted: #9bb0a1; --line: #29392f;
+  --green: #5cc287; --green-ink: #91e0b2; --green-soft: #1d3a29; --pollen: #f2c230; --pollen-soft: #3a3115;
+  --laser: #ff7a52; --glow: #ffd23f; --good: #5cc287; --bad: #ff8a73;
+  --board: #101c15; --ink: #c8d6cc; --soil: #5d4932; --soil-d: #75603f; --root: #c48d5c; --stem: #5db458;
+  --leaf: #4fa850; --leaf-d: #2e6e30; --petal: #e381a5; --petal-d: #b04c74; --anther: #e9b92a; --pistil: #7fb554;
+  --cell-wall: #3e6b38; --cyto: #1c3122; --membrane: #d88a30; --vacuole: #25485b; --nucleus: #7e5aa2; --nucleolus: #c9a6ea;
+  --chloro: #4caf50; --mito: #d98a44; --purple: #a46ee0; --whitefl: #eef2ef; --card: #182820; --water: #4a95c0; --agar: #8f7c3c; --glass: #1e3640;
+  --coat: #e2eae5; --coat-line: #8ea195; --shirt: #2f8a55;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0d1611; --panel: #142019; --panel-2: #1a291f; --fg: #e4eee6; --muted: #9bb0a1; --line: #29392f;
+  --green: #5cc287; --green-ink: #91e0b2; --green-soft: #1d3a29; --pollen: #f2c230; --pollen-soft: #3a3115;
+  --laser: #ff7a52; --glow: #ffd23f; --good: #5cc287; --bad: #ff8a73;
+  --board: #101c15; --ink: #c8d6cc; --soil: #5d4932; --soil-d: #75603f; --root: #c48d5c; --stem: #5db458;
+  --leaf: #4fa850; --leaf-d: #2e6e30; --petal: #e381a5; --petal-d: #b04c74; --anther: #e9b92a; --pistil: #7fb554;
+  --cell-wall: #3e6b38; --cyto: #1c3122; --membrane: #d88a30; --vacuole: #25485b; --nucleus: #7e5aa2; --nucleolus: #c9a6ea;
+  --chloro: #4caf50; --mito: #d98a44; --purple: #a46ee0; --whitefl: #eef2ef; --card: #182820; --water: #4a95c0; --agar: #8f7c3c; --glass: #1e3640;
+  --coat: #e2eae5; --coat-line: #8ea195; --shirt: #2f8a55;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 1480px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+button, select, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--pollen); outline-offset: 2px; }
+
+.top { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin-bottom: 16px; }
+.brand h1 { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+.brand h1 span { color: var(--green); }
+.brand p { margin: 4px 0 0; color: var(--muted); max-width: 62ch; }
+.progress-sum { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.meter { width: 160px; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--green); transition: width .5s; }
+
+.layout { display: grid; grid-template-columns: 236px minmax(0, 1fr) 350px; gap: 18px; align-items: start; }
+@media (max-width: 1180px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+
+/* Lesson rail */
+.course { display: flex; flex-direction: column; gap: 6px; }
+.course h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-family: var(--font-body); font-weight: 700; padding: 0 4px 4px; }
+.lesson-btn { display: grid; grid-template-columns: 30px 1fr; gap: 2px 10px; align-items: center; text-align: left; border: 1px solid transparent; background: transparent; padding: 9px 10px; border-radius: 12px; }
+.lesson-btn:hover { background: var(--panel); }
+.lesson-btn[aria-current="true"] { background: var(--panel); border-color: var(--line); box-shadow: 0 1px 0 var(--line); }
+.lesson-btn .num { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-mono); font-size: 13px; font-weight: 600; background: var(--panel-2); border: 1px solid var(--line); color: var(--muted); }
+.lesson-btn.done .num { background: var(--green); border-color: var(--green); color: var(--panel); }
+.lesson-btn .t { font-weight: 700; line-height: 1.2; }
+.lesson-btn .meta { font-size: 12.5px; color: var(--muted); display: flex; gap: 8px; }
+.tag { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+@media (max-width: 1180px) {
+  .course { flex-direction: row; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+  .course h2 { display: none; }
+  .lesson-btn { flex: 0 0 auto; min-width: 200px; background: var(--panel); border-color: var(--line); }
+  .lesson-btn[aria-current="true"] { border-color: var(--green); }
+}
+
+/* Stage */
+.main { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.stage-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; position: relative; }
+.stage-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; padding: 12px 16px 0; }
+.stage-head h2 { font-size: 1.35rem; font-weight: 700; }
+.stage-head .tag { color: var(--green-ink); background: var(--green-soft); padding: 3px 8px; border-radius: 6px; }
+.toggles { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--panel-2); border-radius: 99px; padding: 4px 12px; font-size: 13.5px; }
+.chip[aria-pressed="true"] { background: var(--green-soft); border-color: var(--green); color: var(--green-ink); font-weight: 700; }
+svg#stage { display: block; width: 100%; height: auto; max-width: 100%; }
+
+.board { fill: var(--board); stroke: var(--line); }
+.ink { stroke: var(--ink); }
+text { font-family: var(--font-body); fill: var(--fg); }
+.lbl { opacity: 0; transition: opacity .3s; pointer-events: none; }
+.show-labels .lbl, .lbl.on { opacity: 1; }
+.lbl line { stroke: var(--ink); stroke-width: 1.3; stroke-dasharray: 3 3; }
+.lbl text, .halo { font-size: 17px; font-weight: 700; paint-order: stroke; stroke: var(--board); stroke-width: 5px; stroke-linejoin: round; }
+.lbl.on text { fill: var(--laser); }
+.dtxt { font-size: 15px; fill: var(--muted); }
+.mono { font-family: var(--font-mono); }
+
+[data-part] { transition: filter .3s; }
+[data-part].hl { filter: drop-shadow(0 0 5px var(--glow)) drop-shadow(0 0 10px var(--glow)); animation: hlpulse 1.4s ease-in-out infinite; }
+@keyframes hlpulse { 50% { opacity: .78; } }
+.zone { fill: var(--glow); opacity: 0; transition: opacity .3s; }
+.zone.hl { opacity: .45; }
+.tapping [data-part] { cursor: pointer; }
+.tapping [data-part]:hover { filter: drop-shadow(0 0 4px var(--green)); }
+
+/* diagram fills */
+.soil { fill: var(--soil); } .soil-line { stroke: var(--soil-d); stroke-width: 3; }
+.root { fill: var(--root); } .root-s { stroke: var(--root); fill: none; stroke-linecap: round; }
+.stem { fill: var(--stem); } .stem-s { stroke: var(--stem); fill: none; stroke-linecap: round; }
+.leafb { fill: var(--leaf); stroke: var(--leaf-d); stroke-width: 2; } .rib { stroke: var(--leaf-d); stroke-width: 2; fill: none; }
+.node { fill: var(--leaf-d); } .bud { fill: var(--leaf); stroke: var(--leaf-d); stroke-width: 2; }
+.petal { fill: var(--petal); stroke: var(--petal-d); stroke-width: 2; } .anther { fill: var(--anther); stroke: var(--ink); stroke-width: 1.5; }
+.fil { stroke: var(--ink); stroke-width: 3; fill: none; } .pistil { fill: var(--pistil); stroke: var(--leaf-d); stroke-width: 2; }
+.ovule { fill: var(--whitefl); stroke: var(--leaf-d); stroke-width: 1.5; } .sepal { fill: var(--leaf); stroke: var(--leaf-d); stroke-width: 2; }
+.pollen { fill: var(--anther); }
+.wall { fill: var(--cell-wall); stroke: var(--leaf-d); stroke-width: 2; } .cyto { fill: var(--cyto); }
+.memb { fill: none; stroke: var(--membrane); stroke-width: 4; } .vac { fill: var(--vacuole); stroke: var(--water); stroke-width: 2; }
+.nuc { fill: var(--nucleus); stroke: var(--nucleolus); stroke-width: 2; } .nucleolus { fill: var(--nucleolus); }
+.chl { fill: var(--chloro); stroke: var(--leaf-d); stroke-width: 1.5; } .grana { stroke: var(--leaf-d); stroke-width: 2; }
+.mito { fill: var(--mito); stroke: var(--ink); stroke-width: 1.2; } .cris { stroke: var(--ink); stroke-width: 1.2; fill: none; }
+.cut { fill: var(--water); opacity: .7; } .epi { fill: var(--cyto); stroke: var(--leaf-d); stroke-width: 1.5; }
+.pal { fill: var(--leaf); stroke: var(--leaf-d); stroke-width: 1.5; } .dot { fill: var(--leaf-d); }
+.spg { fill: var(--pistil); stroke: var(--leaf-d); stroke-width: 1.5; } .sheath { fill: var(--cyto); stroke: var(--leaf-d); stroke-width: 2; }
+.xy { fill: var(--water); stroke: var(--ink); stroke-width: 2; } .ph { fill: var(--pollen); stroke: var(--ink); stroke-width: 1; }
+.guard { fill: var(--leaf); stroke: var(--leaf-d); stroke-width: 2; } .pore { fill: var(--ink); }
+.arr { stroke: var(--ink); stroke-width: 2.5; fill: none; } .arrhead { fill: var(--ink); }
+.ray { stroke: var(--glow); stroke-width: 3; stroke-linecap: round; }
+.fl-p { fill: var(--purple); stroke: var(--ink); stroke-width: 1; } .fl-w { fill: var(--whitefl); stroke: var(--ink); stroke-width: 1.2; } .fcenter { fill: var(--anther); }
+.cellbox { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.card { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.ct { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-anchor: middle; }
+.cs { font-size: 13.5px; text-anchor: middle; fill: var(--muted); }
+.gl { fill: var(--glass); stroke: var(--ink); stroke-width: 1.8; } .agar { fill: var(--agar); } .lid { fill: var(--ink); }
+.callus { fill: var(--agar); stroke: var(--soil-d); stroke-width: 2; filter: brightness(1.15); }
+.pot { fill: var(--soil-d); stroke: var(--ink); stroke-width: 1.5; } .dome { fill: var(--glass); opacity: .7; stroke: var(--ink); stroke-width: 1.5; }
+.tool { stroke: var(--ink); stroke-width: 3; fill: none; stroke-linecap: round; }
+.liq { fill: var(--water); opacity: .55; }
+
+/* Teacher */
+#teacher .skin { fill: var(--skin); } #teacher .hair { fill: var(--hair); } #teacher .hair-hi { fill: var(--hair-hi); }
+#teacher .coat { fill: var(--coat); stroke: var(--coat-line); stroke-width: 2; } #teacher .shirt { fill: var(--shirt); }
+#teacher .eyew { fill: #ffffff; } #teacher .iris { fill: var(--iris); } #teacher .pupil { fill: #10241a; } #teacher .shine { fill: #ffffff; }
+#teacher .lash { stroke: #10241a; stroke-width: 3.5; fill: none; stroke-linecap: round; }
+#teacher .brow { stroke: var(--hair); stroke-width: 3.5; fill: none; stroke-linecap: round; }
+#teacher .blush { fill: var(--blush); opacity: .55; } #teacher .mouth { fill: var(--mouth); }
+#teacher .badge { fill: var(--green); } #teacher .badge-t { fill: #ffffff; font-family: var(--font-mono); font-size: 11px; font-weight: 600; }
+#teacher .shadow { fill: var(--ink); opacity: .12; }
+#teacher .clip { fill: var(--leaf); stroke: var(--leaf-d); stroke-width: 1.5; }
+#armR, #armL, #head { transform-box: view-box; transition: transform .55s cubic-bezier(.3,1.3,.5,1); }
+#armR { transform-origin: 205px 352px; transform: rotate(70deg); }
+#armL { transform-origin: 95px 352px; transform: rotate(0deg); }
+#head { transform-origin: 150px 300px; }
+#bob { animation: bob 3.2s ease-in-out infinite; transform-box: view-box; }
+@keyframes bob { 50% { transform: translateY(3px); } }
+.eye { transform-box: fill-box; transform-origin: center; animation: blink 4.6s infinite; }
+@keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
+#mouth { transform-box: fill-box; transform-origin: center; transition: transform .1s; }
+.talking #mouth { animation: talk .26s ease-in-out infinite alternate; }
+@keyframes talk { from { transform: scale(1, 1); } to { transform: scale(1.15, 3); } }
+.happy-eyes { display: none; } .happy .eyes-open { display: none; } .happy .happy-eyes { display: inline; }
+#armL.wave { animation: wave .55s ease-in-out 4 alternate; transform: rotate(150deg); }
+@keyframes wave { from { transform: rotate(132deg); } to { transform: rotate(168deg); } }
+#thought, #sparkle { opacity: 0; transition: opacity .3s; } .thinking #thought, .cheering #sparkle { opacity: 1; }
+.thinking #head { transform: rotate(-7deg); }
+#thought circle { fill: var(--panel-2); stroke: var(--line); stroke-width: 2; }
+#thought .td { fill: var(--muted); stroke: none; animation: tdot 1s infinite; }
+#thought .td:nth-child(5) { animation-delay: .2s; } #thought .td:nth-child(6) { animation-delay: .4s; }
+@keyframes tdot { 50% { opacity: .2; } }
+#sparkle path { fill: var(--glow); }
+
+#laser { stroke: var(--laser); stroke-width: 3; stroke-linecap: round; opacity: 0; transition: opacity .2s; }
+#laser.on { opacity: .9; animation: draw .45s ease-out forwards; }
+@keyframes draw { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+#laserDot { fill: var(--laser); opacity: 0; } #laserDot.on { opacity: 1; animation: dotp 1s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes dotp { 50% { transform: scale(1.6); opacity: .6; } }
+#ring { fill: none; stroke: var(--laser); stroke-width: 4; stroke-linecap: round; opacity: 0; }
+#ring.on { opacity: 1; animation: draw .8s ease-out forwards; }
+
+/* Caption + controls */
+.caption { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; padding: 14px 16px 16px; border-top: 1px solid var(--line); background: var(--panel-2); }
+.who { font-family: var(--font-display); font-weight: 800; color: var(--green-ink); font-size: 14px; text-transform: uppercase; letter-spacing: .06em; padding-top: 3px; }
+.say { font-size: 1.12rem; line-height: 1.55; max-width: 72ch; min-height: 3.1em; margin: 0; }
+.say-actions { grid-column: 2; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.stepcount { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 9px 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+.btn:hover { border-color: var(--green); }
+.btn.primary { background: var(--green); border-color: var(--green); color: var(--panel); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.small { padding: 5px 10px; font-size: 13.5px; border-radius: 9px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.dots { display: flex; gap: 4px; flex: 1 1 160px; min-width: 120px; }
+.dots button { flex: 1; height: 8px; border: 0; padding: 0; border-radius: 99px; background: var(--line); }
+.dots button.seen { background: var(--green-soft); } .dots button.cur { background: var(--green); }
+.spacer { flex: 1; }
+select.sel { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 7px 8px; }
+
+/* Quiz */
+.quiz { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.quiz-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.quiz-top h3 { font-size: 1.15rem; }
+.qnum { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.qtext { font-size: 1.15rem; font-weight: 700; margin: 0; }
+.opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 8px; }
+.opt { text-align: left; border: 1.5px solid var(--line); background: var(--panel-2); border-radius: 12px; padding: 11px 14px; }
+.opt:hover:not(:disabled) { border-color: var(--green); }
+.opt.right { border-color: var(--good); background: var(--green-soft); }
+.opt.wrong { border-color: var(--bad); }
+.opt:disabled { cursor: default; }
+.tapnote { display: flex; gap: 10px; align-items: center; background: var(--pollen-soft); border-radius: 12px; padding: 10px 14px; font-weight: 700; }
+.feedback { border-radius: 12px; padding: 10px 14px; background: var(--panel-2); border-left: 4px solid var(--line); }
+.feedback.good { border-left-color: var(--good); } .feedback.bad { border-left-color: var(--bad); }
+.feedback b { display: block; }
+.score { font-family: var(--font-display); font-size: 3rem; font-weight: 800; line-height: 1; color: var(--green); }
+
+/* Side panel */
+.side { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; display: flex; flex-direction: column; min-width: 0; overflow: hidden; position: sticky; top: calc(12px + env(safe-area-inset-top, 0px)); }
+@media (max-width: 1180px) { .side { position: static; } }
+.tabs { display: flex; border-bottom: 1px solid var(--line); }
+.tabs button { flex: 1; border: 0; background: transparent; padding: 12px; font-weight: 700; color: var(--muted); border-bottom: 3px solid transparent; }
+.tabs button[aria-selected="true"] { color: var(--green-ink); border-bottom-color: var(--green); }
+.pane { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.pane h3 { font-size: 1rem; }
+.hint { font-size: 13.5px; color: var(--muted); margin: 0; }
+textarea#notes { width: 100%; min-height: 300px; resize: vertical; border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--panel-2); font-family: var(--font-mono); font-size: 13.5px; line-height: 1.6; }
+.row { display: flex; gap: 6px; flex-wrap: wrap; }
+.preview { white-space: pre-wrap; font-family: var(--font-mono); font-size: 13px; background: var(--pollen-soft); border-radius: 12px; padding: 10px 12px; max-height: 260px; overflow: auto; }
+.chat { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; min-height: 120px; }
+.msg { padding: 9px 12px; border-radius: 14px; max-width: 92%; font-size: 15px; }
+.msg.me { align-self: flex-end; background: var(--green); color: var(--panel); border-bottom-right-radius: 4px; }
+.msg.fern { align-self: flex-start; background: var(--panel-2); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+.msg.sys { align-self: center; color: var(--muted); font-size: 13px; }
+.ask-form { display: flex; gap: 6px; }
+.ask-form input { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--panel-2); }
+.suggest { display: flex; flex-wrap: wrap; gap: 6px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 700; opacity: 0; transition: .3s; pointer-events: none; z-index: 20; }
+.toast.on { opacity: 1; transform: translateX(-50%); }
+@media (prefers-reduced-motion: reduce) { #bob, [data-part].hl, .eye, #thought .td { animation: none !important; } #armL.wave { animation: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Professor Fern's <span>Greenhouse</span></h1>
+      <p>Seven illustrated lectures, from reading a plant's anatomy to running a tissue-culture lab. Each one ends with a quiz.</p>
+    </div>
+    <div class="progress-sum"><div class="meter"><i id="meter"></i></div><span id="progText">0 of 7 lessons passed</span></div>
+  </header>
+
+  <div class="layout">
+    <nav class="course" id="course" aria-label="Lessons"><h2>Course map</h2></nav>
+
+    <main class="main">
+      <section class="stage-wrap" aria-label="Lecture stage">
+        <div class="stage-head">
+          <div><span class="tag" id="lessonTag">Anatomy</span> <h2 id="lessonTitle" style="display:inline">The Plant Body</h2></div>
+          <div class="toggles">
+            <button class="chip" id="tLabels" aria-pressed="false">Show all labels</button>
+            <button class="chip" id="tVoice" aria-pressed="true">Voice on</button>
+            <select class="sel" id="rate" aria-label="Speaking speed"><option value="0.85">Slow</option><option value="1" selected>Normal</option><option value="1.2">Fast</option></select>
+          </div>
+        </div>
+        <svg id="stage" viewBox="0 0 1000 620" role="img" aria-label="Professor Fern and the lesson diagram">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrhead" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <rect class="board" x="300" y="14" width="690" height="596" rx="18"/>
+          <g id="diagram"></g>
+          <g id="teacher">
+            <ellipse class="shadow" cx="150" cy="606" rx="105" ry="10"/>
+            <g id="bob">
+              <path class="coat" d="M68,612 L84,384 Q94,346 150,340 Q206,346 216,384 L232,612 Z"/>
+              <path class="shirt" d="M128,344 L150,404 L172,344 Z"/>
+              <path class="coat" d="M128,344 L150,404 L138,470 L112,372 Z" style="stroke-width:1.5"/>
+              <path class="coat" d="M172,344 L150,404 L162,470 L188,372 Z" style="stroke-width:1.5"/>
+              <rect class="badge" x="158" y="420" width="46" height="18" rx="4"/><text class="badge-t" x="181" y="433" text-anchor="middle">FERN</text>
+              <rect x="102" y="470" width="34" height="34" rx="4" class="coat" style="stroke-width:1.5"/><rect x="110" y="458" width="5" height="20" rx="2" fill="var(--laser)"/>
+              <g id="armL">
+                <rect class="coat" x="82" y="350" width="26" height="98" rx="13"/>
+                <circle class="skin" cx="95" cy="456" r="13"/>
+              </g>
+              <g id="head">
+                <rect class="skin" x="138" y="296" width="24" height="50" rx="8"/>
+                <path class="hair" d="M74,258 Q62,148 150,140 Q238,148 226,258 L230,330 Q204,318 198,270 L102,270 Q96,318 70,330 Z"/>
+                <ellipse class="skin" cx="150" cy="238" rx="62" ry="70"/>
+                <path class="hair" d="M86,222 Q92,150 150,150 Q208,150 214,222 Q196,196 180,204 Q166,182 148,200 Q128,180 112,206 Q100,200 86,222 Z"/>
+                <path class="hair-hi" d="M120,166 Q150,154 182,166 Q150,162 120,174 Z"/>
+                <path class="clip" d="M196,178 C214,160 232,166 236,176 C222,190 206,190 196,178 Z"/><path d="M198,178 L232,174" stroke="var(--leaf-d)" stroke-width="1.5"/>
+                <path class="brow" d="M110,214 Q124,207 138,213"/><path class="brow" d="M162,213 Q176,207 190,214"/>
+                <g class="eyes-open">
+                  <g class="eye"><ellipse class="eyew" cx="125" cy="246" rx="15" ry="19"/><ellipse class="iris" cx="126" cy="249" rx="11.5" ry="15"/><ellipse class="pupil" cx="126" cy="250" rx="5.5" ry="7.5"/><circle class="shine" cx="121" cy="242" r="4.2"/><circle class="shine" cx="131" cy="256" r="2"/><path class="lash" d="M108,236 Q124,222 141,234"/></g>
+                  <g class="eye"><ellipse class="eyew" cx="175" cy="246" rx="15" ry="19"/><ellipse class="iris" cx="174" cy="249" rx="11.5" ry="15"/><ellipse class="pupil" cx="174" cy="250" rx="5.5" ry="7.5"/><circle class="shine" cx="169" cy="242" r="4.2"/><circle class="shine" cx="179" cy="256" r="2"/><path class="lash" d="M159,234 Q176,222 192,236"/></g>
+                </g>
+                <g class="happy-eyes"><path class="lash" d="M112,250 Q125,234 139,250"/><path class="lash" d="M161,250 Q175,234 188,250"/></g>
+                <ellipse class="blush" cx="110" cy="273" rx="11" ry="5.5"/><ellipse class="blush" cx="190" cy="273" rx="11" ry="5.5"/>
+                <ellipse id="mouth" class="mouth" cx="150" cy="287" rx="8" ry="3.2"/>
+              </g>
+              <g id="armR">
+                <rect class="coat" x="196" y="339" width="100" height="26" rx="13"/>
+                <circle class="skin" cx="305" cy="352" r="13"/>
+                <rect class="skin" x="305" y="348" width="16" height="7" rx="3.5"/>
+              </g>
+            </g>
+            <g id="thought"><circle cx="238" cy="150" r="5"/><circle cx="252" cy="128" r="8"/><circle cx="276" cy="96" r="22"/><circle class="td" cx="266" cy="96" r="2.6"/><circle class="td" cx="276" cy="96" r="2.6"/><circle class="td" cx="286" cy="96" r="2.6"/></g>
+            <g id="sparkle"><path d="M60,160 l5,13 13,5 -13,5 -5,13 -5,-13 -13,-5 13,-5z"/><path d="M244,120 l4,10 10,4 -10,4 -4,10 -4,-10 -10,-4 10,-4z"/><path d="M40,262 l3,7 7,3 -7,3 -3,7 -3,-7 -7,-3 7,-3z"/></g>
+          </g>
+          <ellipse id="ring" cx="0" cy="0" rx="10" ry="10"/>
+          <line id="laser" x1="0" y1="0" x2="0" y2="0"/>
+          <circle id="laserDot" cx="0" cy="0" r="7"/>
+        </svg>
+        <div class="caption" id="captionBox">
+          <div class="who">Prof. Fern</div>
+          <p class="say" id="say" aria-live="polite"></p>
+          <div class="say-actions">
+            <span class="stepcount" id="stepCount"></span>
+            <button class="btn small" id="pinBtn" title="Add this key point to your notebook">Pin key point to notes</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="controls" id="controls">
+        <button class="btn" id="prevBtn" aria-label="Previous step">&#9664; Back</button>
+        <button class="btn primary" id="playBtn">&#9654; Start lecture</button>
+        <button class="btn" id="nextBtn" aria-label="Next step">Next &#9654;</button>
+        <div class="dots" id="dots" aria-label="Lecture steps"></div>
+        <button class="btn" id="quizBtn">Take the quiz</button>
+      </div>
+
+      <section class="quiz" id="quiz" hidden aria-live="polite"></section>
+    </main>
+
+    <aside class="side">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tabNotes" aria-selected="true">My notebook</button>
+        <button role="tab" id="tabAsk" aria-selected="false">Ask Prof. Fern</button>
+      </div>
+      <div class="pane" id="paneNotes">
+        <h3 id="notesTitle">Notes: The Plant Body</h3>
+        <p class="hint">Type freely, pin key points from the lecture, or let Prof. Fern draft study notes from the lesson. Saved in this browser.</p>
+        <textarea id="notes" aria-label="Lesson notes" placeholder="Your notes for this lesson..."></textarea>
+        <div class="row">
+          <button class="btn small" id="buildNotes">Add all key points</button>
+          <button class="btn small" id="aiNotes" hidden>Have Prof. Fern write study notes</button>
+        </div>
+        <div id="aiNotesOut" hidden>
+          <div class="preview" id="aiNotesText"></div>
+          <div class="row" style="margin-top:6px"><button class="btn small primary" id="aiNotesAdd">Add to my notes</button><button class="btn small" id="aiNotesDrop">Discard</button></div>
+        </div>
+        <div class="row">
+          <button class="btn small primary" id="dlNotes">Download all notes (.md)</button>
+          <button class="btn small" id="copyNotes">Copy</button>
+        </div>
+      </div>
+      <div class="pane" id="paneAsk" hidden>
+        <p class="hint" id="askStatus">Connecting to Prof. Fern...</p>
+        <div class="chat" id="chat"></div>
+        <div class="suggest" id="suggest"></div>
+        <form class="ask-form" id="askForm">
+          <input id="askInput" placeholder="Ask about this lesson..." aria-label="Your question" disabled>
+          <button class="btn primary" id="askBtn" disabled>Ask</button>
+        </form>
+      </div>
+    </aside>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- diagram helpers ---------- */
+const P = (id, inner) => `<g data-part="${id}">${inner}</g>`;
+const L = (id, text, tx, ty, ax, ay, anchor = 'start') => {
+  const lx = anchor === 'end' ? tx + 4 : tx - 4;
+  return `<g class="lbl" data-for="${id}"><line x1="${lx}" y1="${ty - 5}" x2="${ax}" y2="${ay}"/><circle cx="${ax}" cy="${ay}" r="3" fill="var(--ink)"/><text x="${tx}" y="${ty}" text-anchor="${anchor}">${text}</text></g>`;
+};
+const arrow = (x1, y1, x2, y2) => `<line class="arr" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-end="url(#ah)"/>`;
+function flw(cx, cy, r, cls) {
+  let s = '';
+  for (let i = 0; i < 5; i++) { const a = (i * 72 - 90) * Math.PI / 180; s += `<circle class="${cls}" cx="${(cx + r * .62 * Math.cos(a)).toFixed(1)}" cy="${(cy + r * .62 * Math.sin(a)).toFixed(1)}" r="${(r * .5).toFixed(1)}"/>`; }
+  return s + `<circle class="fcenter" cx="${cx}" cy="${cy}" r="${(r * .32).toFixed(1)}"/>`;
+}
+function miniPlant(cx, by, h, flower) {
+  return `<line class="stem-s" x1="${cx}" y1="${by}" x2="${cx}" y2="${by - h}" stroke-width="4"/>
+  <ellipse class="leafb" cx="${cx - 9}" cy="${by - h * .45}" rx="10" ry="5" transform="rotate(-25 ${cx - 9} ${by - h * .45})"/>
+  <ellipse class="leafb" cx="${cx + 9}" cy="${by - h * .65}" rx="10" ry="5" transform="rotate(25 ${cx + 9} ${by - h * .65})"/>
+  ${flower ? flw(cx, by - h - 4, 9, flower) : ''}`;
+}
+function jar(cx, top, w, h, inner = '') {
+  const x = cx - w / 2;
+  return `<rect class="lid" x="${x + 6}" y="${top}" width="${w - 12}" height="10" rx="3"/>
+  <rect class="gl" x="${x}" y="${top + 10}" width="${w}" height="${h}" rx="10"/>
+  <rect class="agar" x="${x + 3}" y="${top + 10 + h * .62}" width="${w - 6}" height="${h * .38 - 3}" rx="7"/>${inner}`;
+}
+function rng(seed) { return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
+const card = (id, x, y, w, h, title, sub, icon) =>
+  P(id, `<rect class="card" x="${x}" y="${y}" width="${w}" height="${h}" rx="14"/>${icon}<text class="ct" x="${x + w / 2}" y="${y + h - 32}">${title}</text><text class="cs" x="${x + w / 2}" y="${y + h - 12}">${sub}</text>`);
+
+/* ---------- diagrams ---------- */
+function dPlant() {
+  return `
+  <rect class="soil" x="301" y="440" width="688" height="169" rx="0"/><line class="soil-line" x1="301" y1="440" x2="989" y2="440"/>
+  ${P('roots', `<path class="root" d="M643,440 L657,440 L652,596 L648,596 Z"/>
+    <path class="root-s" stroke-width="6" d="M649,470 Q620,490 590,522"/><path class="root-s" stroke-width="6" d="M651,482 Q690,500 722,532"/>
+    <path class="root-s" stroke-width="5" d="M649,522 Q615,548 582,576"/><path class="root-s" stroke-width="5" d="M651,540 Q690,560 730,586"/>
+    <path class="root-s" stroke-width="3" d="M600,512 Q590,500 580,498"/><path class="root-s" stroke-width="3" d="M700,515 Q712,500 724,500"/>`)}
+  ${P('root-hairs', `<g class="root-s" stroke-width="1.6">
+    <line x1="700" y1="516" x2="694" y2="506"/><line x1="706" y1="520" x2="712" y2="510"/><line x1="710" y1="524" x2="704" y2="534"/><line x1="714" y1="527" x2="722" y2="519"/>
+    <line x1="718" y1="530" x2="714" y2="541"/><line x1="722" y1="533" x2="731" y2="527"/><line x1="696" y1="513" x2="702" y2="524"/></g>`)}
+  ${P('stem', `<rect class="stem" x="642" y="112" width="16" height="330" rx="7"/>`)}
+  <rect class="zone" data-part="internode" x="634" y="287" width="32" height="76" rx="6"/>
+  ${P('petiole', `<line class="stem-s" stroke-width="6" x1="645" y1="370" x2="590" y2="350"/><line class="stem-s" stroke-width="6" x1="655" y1="280" x2="710" y2="262"/><line class="stem-s" stroke-width="5" x1="645" y1="190" x2="600" y2="175"/>`)}
+  ${P('leaf', `<path class="leafb" d="M590,350 C560,298 470,298 440,340 C470,382 560,392 590,350 Z"/><path class="rib" d="M588,350 Q520,338 446,340"/>
+    <path class="leafb" d="M710,262 C740,210 830,210 860,252 C830,292 740,302 710,262 Z"/><path class="rib" d="M712,262 Q790,250 854,252"/>
+    <path class="leafb" d="M600,175 C575,133 505,133 480,165 C505,198 575,205 600,175 Z"/><path class="rib" d="M598,175 Q540,164 486,165"/>`)}
+  ${P('node', `<ellipse class="node" cx="650" cy="370" rx="13" ry="6"/><ellipse class="node" cx="650" cy="280" rx="13" ry="6"/><ellipse class="node" cx="650" cy="190" rx="13" ry="6"/>`)}
+  ${P('axillary-bud', `<ellipse class="bud" cx="634" cy="356" rx="6" ry="10" transform="rotate(-25 634 356)"/><ellipse class="bud" cx="666" cy="266" rx="6" ry="10" transform="rotate(25 666 266)"/>`)}
+  <path class="stem-s" stroke-width="5" d="M655,190 Q700,172 732,134"/>
+  ${P('flower', flw(742, 118, 24, 'petal'))}
+  ${P('apical-bud', `<path class="bud" d="M650,78 C666,94 664,112 650,118 C636,112 634,94 650,78 Z"/><path class="leafb" d="M648,108 C628,104 622,92 626,86 C640,90 646,98 648,108 Z"/><path class="leafb" d="M652,108 C672,104 678,92 674,86 C660,90 654,98 652,108 Z"/>`)}
+  ${L('apical-bud', 'Apical bud', 690, 76, 660, 92)}
+  ${L('flower', 'Flower', 790, 156, 756, 132)}
+  ${L('stem', 'Stem', 690, 222, 659, 232)}
+  ${L('axillary-bud', 'Axillary bud', 704, 326, 668, 270)}
+  ${L('internode', 'Internode', 704, 352, 664, 328)}
+  ${L('node', 'Node', 704, 384, 664, 372)}
+  ${L('leaf', 'Leaf blade', 336, 286, 478, 326)}
+  ${L('petiole', 'Petiole', 512, 418, 612, 362)}
+  ${L('roots', 'Roots', 470, 512, 596, 518)}
+  ${L('root-hairs', 'Root hairs', 790, 566, 728, 534)}
+  <text class="dtxt" x="320" y="462">soil line</text>`;
+}
+
+function dLeaf() {
+  const X0 = 330, X1 = 800, r = rng(7);
+  let epiU = '', epiL = '', pal = '', spg = '';
+  for (let x = X0; x < X1; x += 47) epiU += `<rect class="epi" x="${x}" y="108" width="47" height="40" rx="6"/>`;
+  for (let x = X0; x < X1; x += 47) { if (x + 47 > 655 && x < 705) continue; epiL += `<rect class="epi" x="${x}" y="428" width="47" height="40" rx="6"/>`; }
+  epiL += `<rect class="epi" x="${X0 + 47 * 6}" y="428" width="${655 - (X0 + 47 * 6)}" height="40" rx="6"/>`;
+  for (let x = X0 + 2; x < X1 - 40; x += 43) {
+    pal += `<rect class="pal" x="${x}" y="151" width="39" height="114" rx="14"/>`;
+    for (let k = 0; k < 4; k++) pal += `<circle class="dot" cx="${x + 12 + (k % 2) * 15}" cy="${172 + k * 24}" r="5"/>`;
+  }
+  for (let y = 290; y < 420; y += 34) for (let x = X0 + 22; x < X1 - 10; x += 44) {
+    const cx = x + (r() - .5) * 16, cy = y + (r() - .5) * 12, rr = 14 + r() * 5;
+    if (Math.hypot(cx - 560, cy - 340) < 72) continue;
+    if (cy > 400 && Math.abs(cx - 680) < 34) continue;
+    spg += `<circle class="spg" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${rr.toFixed(1)}"/>`;
+  }
+  let xy = '';
+  [[540, 312], [560, 306], [580, 312], [548, 332], [572, 332]].forEach(([x, y]) => xy += `<circle class="xy" cx="${x}" cy="${y}" r="9"/>`);
+  let ph = '';
+  [[542, 360], [558, 368], [575, 360], [566, 352], [550, 350]].forEach(([x, y]) => ph += `<circle class="ph" cx="${x}" cy="${y}" r="6"/>`);
+  let rays = '';
+  for (let i = 0; i < 5; i++) rays += `<line class="ray" x1="${380 + i * 90}" y1="30" x2="${410 + i * 90}" y2="88"/>`;
+  return `${rays}<text class="dtxt" x="320" y="30">light</text>
+  ${P('cuticle', `<rect class="cut" x="${X0}" y="100" width="${X1 - X0}" height="8" rx="3"/><rect class="cut" x="${X0}" y="468" width="${X1 - X0}" height="6" rx="3"/>`)}
+  ${P('upper-epidermis', epiU)}
+  ${P('palisade', pal)}
+  ${P('spongy', spg)}
+  <circle class="sheath" cx="560" cy="338" r="54"/>
+  ${P('xylem', xy)}
+  ${P('phloem', ph)}
+  ${P('lower-epidermis', epiL)}
+  ${P('guard-cells', `<ellipse class="guard" cx="667" cy="448" rx="13" ry="19"/><ellipse class="guard" cx="693" cy="448" rx="13" ry="19"/>`)}
+  ${P('stoma', `<ellipse class="pore" cx="680" cy="448" rx="3.5" ry="13"/>`)}
+  ${arrow(660, 590, 670, 480)}<text class="dtxt" x="560" y="560">CO₂ in</text>
+  ${arrow(700, 482, 712, 590)}<text class="dtxt" x="722" y="560">O₂ + water vapour out</text>
+  ${L('cuticle', 'Waxy cuticle', 820, 104, 790, 104)}
+  ${L('upper-epidermis', 'Upper epidermis', 820, 134, 790, 128)}
+  ${L('palisade', 'Palisade mesophyll', 820, 210, 772, 208)}
+  ${L('spongy', 'Spongy mesophyll', 820, 300, 770, 300)}
+  ${L('xylem', 'Xylem', 820, 336, 590, 312)}
+  ${L('phloem', 'Phloem', 820, 370, 582, 362)}
+  ${L('lower-epidermis', 'Lower epidermis', 820, 440, 790, 448)}
+  ${L('guard-cells', 'Guard cells', 820, 476, 704, 456)}
+  ${L('stoma', 'Stoma (pore)', 820, 506, 682, 460)}`;
+}
+
+function dCell() {
+  const chl = [[405, 320, -20], [420, 462, 15], [560, 496, 0], [690, 496, -10], [772, 250, 80]].map(([x, y, a]) =>
+    `<g transform="rotate(${a} ${x} ${y})"><ellipse class="chl" cx="${x}" cy="${y}" rx="28" ry="14"/><line class="grana" x1="${x - 14}" y1="${y - 5}" x2="${x - 14}" y2="${y + 5}"/><line class="grana" x1="${x}" y1="${y - 6}" x2="${x}" y2="${y + 6}"/><line class="grana" x1="${x + 14}" y1="${y - 5}" x2="${x + 14}" y2="${y + 5}"/></g>`).join('');
+  const mito = [[560, 114, 0], [690, 114, 10], [776, 430, 80]].map(([x, y, a]) =>
+    `<g transform="rotate(${a} ${x} ${y})"><ellipse class="mito" cx="${x}" cy="${y}" rx="20" ry="10"/><path class="cris" d="M${x - 13},${y} q4,-7 8,0 t8,0 t8,0"/></g>`).join('');
+  return `
+  ${P('cell-wall', `<rect class="wall" x="340" y="70" width="470" height="480" rx="40"/>`)}
+  ${P('cytoplasm', `<rect class="cyto" x="356" y="86" width="438" height="448" rx="30"/>`)}
+  ${P('membrane', `<rect class="memb" x="356" y="86" width="438" height="448" rx="30"/>`)}
+  ${P('vacuole', `<rect class="vac" x="500" y="150" width="260" height="290" rx="90"/>`)}
+  ${P('nucleus', `<circle class="nuc" cx="420" cy="192" r="48"/><circle class="nucleolus" cx="430" cy="186" r="15"/>`)}
+  ${P('chloroplast', chl)}
+  ${P('mitochondrion', mito)}
+  ${L('cell-wall', 'Cell wall', 830, 92, 806, 110)}
+  ${L('membrane', 'Cell membrane', 830, 140, 794, 150)}
+  ${L('cytoplasm', 'Cytoplasm', 830, 380, 784, 380)}
+  ${L('vacuole', 'Central vacuole', 830, 300, 760, 300)}
+  ${L('nucleus', 'Nucleus', 830, 196, 468, 196)}
+  ${L('chloroplast', 'Chloroplast', 830, 518, 718, 496)}
+  ${L('mitochondrion', 'Mitochondrion', 830, 440, 790, 432)}`;
+}
+
+function dFlower() {
+  const pollen = [[574, 218], [596, 226], [700, 228], [726, 214], [640, 182], [662, 184], [612, 160], [700, 150]].map(([x, y]) => `<circle class="pollen" cx="${x}" cy="${y}" r="3.2"/>`).join('');
+  return `
+  <rect class="stem" x="642" y="478" width="16" height="122" rx="6"/>
+  ${P('petal', `<path class="petal" d="M612,452 C500,420 428,300 470,198 C540,250 600,350 628,442 Z"/><path class="petal" d="M688,452 C800,420 872,300 830,198 C760,250 700,350 672,442 Z"/>`)}
+  ${P('stamen', `${P('filament', `<path class="fil" d="M628,456 Q592,360 585,262"/><path class="fil" d="M638,456 Q618,370 612,278"/><path class="fil" d="M662,456 Q682,370 688,278"/><path class="fil" d="M672,456 Q708,360 715,262"/>`)}
+    ${P('anther', `<ellipse class="anther" cx="585" cy="246" rx="9" ry="17"/><ellipse class="anther" cx="612" cy="262" rx="9" ry="17"/><ellipse class="anther" cx="688" cy="262" rx="9" ry="17"/><ellipse class="anther" cx="715" cy="246" rx="9" ry="17"/>`)}`)}
+  ${P('pistil', `${P('style', `<rect class="pistil" x="645" y="200" width="10" height="174" rx="4"/>`)}
+    ${P('ovary', `<path class="pistil" d="M620,462 C598,422 608,382 640,370 L660,370 C692,382 702,422 680,462 Z"/>` +
+    P('ovule', `<circle class="ovule" cx="638" cy="424" r="7"/><circle class="ovule" cx="662" cy="424" r="7"/><circle class="ovule" cx="650" cy="402" r="7"/><circle class="ovule" cx="650" cy="446" r="7"/>`))}
+    ${P('stigma', `<ellipse class="pistil" cx="650" cy="194" rx="25" ry="13"/>`)}`)}
+  ${P('sepal', `<path class="sepal" d="M612,472 C566,456 540,410 556,372 C588,400 610,440 624,466 Z"/><path class="sepal" d="M688,472 C734,456 760,410 744,372 C712,400 690,440 676,466 Z"/>`)}
+  ${P('receptacle', `<ellipse class="sepal" cx="650" cy="474" rx="46" ry="14"/>`)}
+  ${P('pollen', pollen)}
+  ${L('stamen', 'Stamen (male)', 330, 160, 590, 228)}
+  ${L('anther', 'Anther', 330, 236, 574, 244)}
+  ${L('filament', 'Filament', 330, 312, 598, 340)}
+  ${L('petal', 'Petal', 330, 386, 500, 300)}
+  ${L('sepal', 'Sepal', 330, 448, 570, 420)}
+  ${L('receptacle', 'Receptacle', 330, 512, 608, 478)}
+  ${L('stigma', 'Stigma', 876, 180, 675, 194)}
+  ${L('style', 'Style', 876, 260, 656, 280)}
+  ${L('pistil', 'Pistil (female)', 876, 322, 656, 330)}
+  ${L('ovary', 'Ovary', 876, 404, 690, 410)}
+  ${L('ovule', 'Ovule', 876, 456, 657, 446)}
+  ${L('pollen', 'Pollen', 876, 136, 704, 150)}`;
+}
+
+function dPunnett() {
+  const g = (x, y, t) => `<circle cx="${x}" cy="${y}" r="17" class="card"/><text x="${x}" y="${y + 6}" text-anchor="middle" class="mono" font-size="18" font-weight="600">${t}</text>`;
+  const cell = (id, x, y, gt, cls) => P(id, `<rect class="cellbox" x="${x}" y="${y}" width="170" height="170" rx="8"/>${flw(x + 85, y + 68, 30, cls)}<text x="${x + 85}" y="${y + 146}" text-anchor="middle" class="mono" font-size="26" font-weight="600">${gt}</text>`);
+  return `
+  <text class="dtxt" x="324" y="44"><tspan font-weight="700" fill="var(--fg)">P</tspan> = purple (dominant) · <tspan font-weight="700" fill="var(--fg)">p</tspan> = white (recessive)</text>
+  ${P('parent1', `${flw(358, 98, 22, 'fl-p')}<text x="392" y="94" font-weight="700">Parent 1 · Pp</text><text class="dtxt" x="392" y="114">pollen carries P or p →</text>`)}
+  ${P('parent2', `${flw(400, 330, 22, 'fl-p')}<text x="400" y="380" text-anchor="middle" font-weight="700">Parent 2 · Pp</text><text class="dtxt" x="400" y="400" text-anchor="middle">eggs carry P or p</text>`)}
+  ${P('gametes', g(625, 150, 'P') + g(795, 150, 'p') + g(515, 255, 'P') + g(515, 425, 'p'))}
+  ${cell('sq-PP', 540, 170, 'PP', 'fl-p')}
+  ${P('het', cell('sq-Pp1', 710, 170, 'Pp', 'fl-p') + cell('sq-Pp2', 540, 340, 'Pp', 'fl-p'))}
+  ${cell('sq-pp', 710, 340, 'pp', 'fl-w')}
+  ${P('ratio', `<rect x="540" y="532" width="255" height="26" rx="6" class="fl-p"/><rect x="795" y="532" width="85" height="26" rx="6" class="fl-w"/>
+    <text x="540" y="590" font-weight="700">3 purple : 1 white</text><text class="dtxt mono" x="880" y="590" text-anchor="end">1 PP : 2 Pp : 1 pp</text>`)}`;
+}
+
+function dBreeding() {
+  const forceps = (x, y) => `<path class="tool" d="M${x - 22},${y + 30} L${x + 4},${y + 2} M${x - 14},${y + 36} L${x + 8},${y + 8}"/>${flw(x + 18, y + 14, 12, 'petal')}`;
+  const brush = (x, y) => `<path class="tool" d="M${x - 30},${y + 34} L${x},${y + 12}"/><path d="M${x},${y + 12} l12,-10 4,6z" fill="var(--anther)"/><ellipse class="pistil" cx="${x + 30}" cy="${y + 8}" rx="14" ry="7"/>`;
+  const bag = (x, y) => `<path d="M${x - 22},${y} h44 l6,46 h-56z" fill="var(--glass)" stroke="var(--ink)" stroke-width="1.8"/><rect x="${x + 18}" y="${y + 26}" width="24" height="14" rx="2" fill="var(--pollen-soft)" stroke="var(--ink)"/><text x="${x + 30}" y="${y + 37}" font-size="9" text-anchor="middle" class="mono">A×B</text>`;
+  const row = (x, y, cls) => [0, 1, 2, 3].map(i => miniPlant(x + i * 30, y, 34 + (cls ? 0 : 0), cls ? cls[i] : 'fl-p')).join('');
+  return `
+  ${card('parentA', 340, 34, 210, 124, 'Parent A (♀)', 'high yield · seed parent', miniPlant(445, 82, 40, 'fl-p'))}
+  <text x="655" y="108" text-anchor="middle" font-size="44" font-weight="800" fill="var(--muted)">×</text>
+  ${card('parentB', 760, 34, 210, 124, 'Parent B (♂)', 'disease resistant · pollen', miniPlant(865, 82, 40, 'fl-w'))}
+  ${card('emasculate', 340, 196, 200, 116, 'Emasculate', 'remove A’s anthers early', forceps(440, 204))}
+  ${card('pollinate', 555, 196, 200, 116, 'Pollinate', 'B’s pollen → A’s stigma', brush(650, 206))}
+  ${card('bag', 770, 196, 200, 116, 'Bag & tag', 'block stray pollen, label', bag(860, 206))}
+  ${card('f1', 400, 346, 230, 118, 'F1 generation', 'uniform, hybrid vigour', row(470, 400))}
+  ${card('f2', 690, 346, 230, 118, 'F2 generation', 'traits segregate', row(760, 400, ['fl-p', 'fl-w', 'fl-p', 'fl-p']))}
+  ${card('backcross', 400, 494, 230, 112, 'Backcross', 'F1 × Parent A, repeat', `<path class="arr" d="M488,530 a26,16 0 1,1 52,0" marker-end="url(#ah)"/><text x="514" y="546" text-anchor="middle" class="mono" font-size="13">BC1…BC6</text>`)}
+  ${card('select', 690, 494, 230, 112, 'Select', 'keep the best, F3–F6+', `<path d="M792,506 l8,16 18,3 -13,12 3,18 -16,-9 -16,9 3,-18 -13,-12 18,-3z" fill="var(--glow)" stroke="var(--ink)" stroke-width="1.5"/>`)}
+  ${arrow(445, 158, 442, 192)}${arrow(865, 158, 700, 194)}${arrow(540, 254, 551, 254)}${arrow(755, 254, 766, 254)}${arrow(840, 312, 600, 342)}
+  ${arrow(630, 404, 686, 404)}<text class="dtxt" x="658" y="394" text-anchor="middle">self</text>
+  ${arrow(515, 464, 515, 490)}${arrow(805, 464, 805, 490)}`;
+}
+
+function dCulture() {
+  const xs = [330, 492, 654, 816], w = 150, h = 238, y1 = 34, y2 = 352;
+  const C = (i, y) => xs[i] + w / 2;
+  const st = (id, i, y, title, sub, art) => card(id, xs[i], y, w, h, title, sub, `<text x="${xs[i] + 14}" y="${y + 26}" class="mono" font-size="13" fill="var(--muted)">${String(i + 1 + (y === y2 ? 4 : 0))}</text>${art}`);
+  const shoots = (cx, by) => [-24, -8, 8, 24].map((d, k) => miniPlant(cx + d, by, 30 + (k % 2) * 10)).join('');
+  return `
+  ${st('mother', 0, y1, 'Stock plant', 'healthy, true-to-type', `<path class="pot" d="M${C(0) - 30},150 h60 l-8,40 h-44z"/>${miniPlant(C(0), 150, 70, 'petal')}`)}
+  ${st('explant', 1, y1, 'Explant', 'shoot tip or node', `<path class="tool" d="M${C(1) - 50},170 L${C(1) - 6},110"/><path d="M${C(1) - 6},110 l10,-14 4,4z" fill="var(--ink)"/><line class="stem-s" stroke-width="6" x1="${C(1) + 14}" y1="160" x2="${C(1) + 30}" y2="110"/><ellipse class="leafb" cx="${C(1) + 40}" cy="104" rx="12" ry="6"/><ellipse class="node" cx="${C(1) + 22}" cy="136" rx="7" ry="4"/>`)}
+  ${st('sterilize', 2, y1, 'Surface sterilise', 'ethanol → bleach → rinse', `<path class="gl" d="M${C(2) - 34},80 h68 v96 q0,12 -12,12 h-44 q-12,0 -12,-12z"/><rect class="liq" x="${C(2) - 32}" y="120" width="64" height="66" rx="8"/><g transform="rotate(20 ${C(2)} 140)"><line class="stem-s" stroke-width="5" x1="${C(2)}" y1="128" x2="${C(2)}" y2="160"/><ellipse class="leafb" cx="${C(2) + 8}" cy="128" rx="9" ry="5"/></g>`)}
+  ${st('medium', 3, y1, 'Initiation', 'MS medium, sterile', jar(C(3), 70, 96, 118, `<line class="stem-s" stroke-width="5" x1="${C(3)}" y1="152" x2="${C(3)}" y2="126"/><ellipse class="leafb" cx="${C(3) + 8}" cy="124" rx="9" ry="5"/>`))}
+  ${st('callus', 0, y2, 'Callus', 'undifferentiated cells', jar(C(0), 388, 96, 118, `<path class="callus" d="M${C(0) - 26},470 q-6,-22 12,-26 q4,-16 20,-10 q16,-8 20,10 q16,6 6,26z"/>`))}
+  ${st('shoots', 1, y2, 'Multiply shoots', '↑ cytokinin (BAP)', jar(C(1), 388, 96, 118, shoots(C(1), 470)))}
+  ${st('rooting', 2, y2, 'Root shoots', '↑ auxin (IBA / NAA)', jar(C(2), 388, 96, 118, miniPlant(C(2), 470, 46) + `<path class="root-s" stroke-width="2.5" d="M${C(2)},470 l-12,26 M${C(2)},470 l2,30 M${C(2)},470 l14,24"/>`))}
+  ${st('acclimate', 3, y2, 'Acclimatise', 'lower humidity slowly', `<path class="pot" d="M${C(3) - 30},470 h60 l-8,34 h-44z"/>${miniPlant(C(3), 470, 52, 'petal')}<path class="dome" d="M${C(3) - 40},470 v-50 a40,40 0 0,1 80,0 v50z"/>`)}
+  ${arrow(482, 160, 490, 160)}${arrow(644, 160, 652, 160)}${arrow(806, 160, 814, 160)}
+  <path class="arr" d="M891,274 C891,322 405,300 405,346" marker-end="url(#ah)"/>
+  ${arrow(482, 478, 490, 478)}${arrow(644, 478, 652, 478)}${arrow(806, 478, 814, 478)}`;
+}
+
+/* ---------- curriculum ---------- */
+const LESSONS = [
+{ id: 'body', tag: 'Anatomy', title: 'The Plant Body', draw: dPlant,
+  parts: { roots: 'Roots', 'root-hairs': 'Root hairs', stem: 'Stem', node: 'Node', internode: 'Internode', leaf: 'Leaf blade', petiole: 'Petiole', 'axillary-bud': 'Axillary bud', 'apical-bud': 'Apical bud', flower: 'Flower' },
+  steps: [
+    { g: 'wave', say: "Hi, I'm Professor Fern. Before you can breed a plant, you have to be able to read one. Today we tour the whole plant body, from root tip to shoot tip.", n: 'A plant has two systems: the shoot system above ground and the root system below ground.' },
+    { g: 'highlight', p: 'roots', say: "Below the soil line is the root system. Roots anchor the plant and absorb water and minerals. This plant has a thick main taproot with lateral roots branching off it.", n: 'Roots anchor the plant and absorb water and minerals. Taproot = one main root; lateral roots branch off it.' },
+    { g: 'circle', p: 'root-hairs', say: "Near the tips are root hairs. Each one is a long outgrowth of a single epidermal cell, and together they hugely increase the surface area for absorbing water.", n: 'Root hairs are single-cell outgrowths near root tips that increase surface area for water uptake.' },
+    { g: 'point', p: 'stem', say: "The stem holds the plant up and acts as plumbing. Xylem carries water up from the roots, and phloem moves sugars to wherever the plant needs them.", n: 'Stem: support + transport. Xylem moves water up; phloem moves sugars around the plant.' },
+    { g: 'circle', p: 'node', say: "These bands on the stem are nodes, the points where leaves and buds attach. Remember nodes. A cutting or a tissue-culture explant that includes a node can grow a brand new shoot.", n: 'Node = where leaves and buds attach. Cuttings and explants with a node can regrow a shoot.' },
+    { g: 'highlight', p: 'internode', say: "The stretch of stem between two nodes is the internode. Short internodes give a compact, bushy plant, and breeders often select for that.", n: 'Internode = stem section between two nodes. Short internodes = compact plant (a common breeding target).' },
+    { g: 'point', p: 'leaf', say: "The leaf blade is the plant's solar panel. It is broad and flat to catch light for photosynthesis. Notice the midrib running down the middle. That is the main vein.", n: 'Leaf blade (lamina) captures light for photosynthesis; the midrib is the main vein.' },
+    { g: 'point', p: 'petiole', say: "The petiole is the leaf stalk. It joins the blade to the stem at a node and can turn the leaf toward the light.", n: 'Petiole = leaf stalk connecting blade to stem.' },
+    { g: 'circle', p: 'axillary-bud', say: "Tucked in the angle between petiole and stem is an axillary bud. It is a dormant side shoot. Pinch off the top of a plant and these buds wake up, which is why pruning makes plants bushier.", n: 'Axillary (lateral) bud sits in the leaf axil; it is a dormant side shoot that grows when the tip is removed.' },
+    { g: 'point', p: 'apical-bud', say: "At the very top is the apical bud, the growing tip. It produces the hormone auxin, which keeps the axillary buds asleep. This effect is called apical dominance.", n: 'Apical bud = shoot tip. It makes auxin, which suppresses axillary buds (apical dominance).' },
+    { g: 'highlight', p: 'flower', say: "Finally, the flower: the reproductive organ, and the place where a breeder does most of the work. We'll take one apart in lesson four. Ready for a quick quiz?", n: 'The flower is the reproductive organ, where crosses are made.' }
+  ],
+  quiz: [
+    { t: 'tap', q: 'Tap a node on the plant.', part: 'node', why: 'Nodes are the bands on the stem where leaves and buds attach.' },
+    { t: 'mc', q: 'Which hormone from the apical bud keeps side buds dormant?', o: ['Auxin', 'Ethylene', 'Gibberellin', 'Abscisic acid'], a: 0, why: 'Auxin from the shoot tip causes apical dominance.' },
+    { t: 'tap', q: 'Tap the axillary bud.', part: 'axillary-bud', why: 'Axillary buds sit in the angle between the petiole and the stem.' },
+    { t: 'mc', q: 'What is an internode?', o: ['The tip of a root', 'The stem between two nodes', 'The leaf stalk', 'A bud on the leaf'], a: 1, why: 'Internode = the stem section between two nodes.' },
+    { t: 'mc', q: 'You pinch off the apical bud. What most likely happens?', o: ['The plant dies', 'Roots stop growing', 'Axillary buds start growing and the plant gets bushier', 'Leaves turn white'], a: 2, why: 'Removing the auxin source releases apical dominance, so side buds grow.' }
+  ] },
+
+{ id: 'leaf', tag: 'Biology', title: 'Inside a Leaf', draw: dLeaf,
+  parts: { cuticle: 'Waxy cuticle', 'upper-epidermis': 'Upper epidermis', palisade: 'Palisade mesophyll', spongy: 'Spongy mesophyll', xylem: 'Xylem', phloem: 'Phloem', 'lower-epidermis': 'Lower epidermis', 'guard-cells': 'Guard cells', stoma: 'Stoma' },
+  steps: [
+    { g: 'wave', say: "This is a leaf sliced straight through, a cross-section, the way you'd see it under a microscope. Read it like a layer cake, from top to bottom.", n: 'Leaf cross-section: read the layers from top (upper surface) to bottom.' },
+    { g: 'point', p: 'cuticle', say: "On the very outside is the waxy cuticle. It waterproofs the leaf and slows water loss. Plants from dry places often have a thicker cuticle.", n: 'Cuticle = waxy waterproof layer that reduces water loss.' },
+    { g: 'highlight', p: 'upper-epidermis', say: "Under it is the upper epidermis, one layer of clear, tightly fitted cells. It protects the leaf and lets light pass straight through.", n: 'Upper epidermis: single protective layer of clear cells that lets light through.' },
+    { g: 'highlight', p: 'palisade', say: "Next comes the palisade mesophyll: tall cells packed with chloroplasts, standing like a fence. Most photosynthesis happens right here, closest to the light.", n: 'Palisade mesophyll: tall cells full of chloroplasts, where most photosynthesis happens.' },
+    { g: 'highlight', p: 'spongy', say: "Below that is the spongy mesophyll. The cells are loose and round, with air spaces between them so carbon dioxide can spread through the leaf.", n: 'Spongy mesophyll: loose cells with air spaces for gas diffusion.' },
+    { g: 'circle', p: 'xylem', say: "In the middle is a vein, a vascular bundle. The upper part is xylem, which brings water and minerals in from the roots.", n: 'Vascular bundle (vein): xylem carries water and minerals (usually the upper side in a leaf vein).' },
+    { g: 'circle', p: 'phloem', say: "The lower part is phloem. It carries the sugars made by photosynthesis out of the leaf to the rest of the plant.", n: 'Phloem carries sugars out of the leaf to the rest of the plant.' },
+    { g: 'circle', p: 'stoma', say: "On the underside is a stoma, a tiny pore. Carbon dioxide comes in through it, and oxygen and water vapour go out. Losing water this way is called transpiration.", n: 'Stoma (plural stomata) = pore for gas exchange: CO2 in, O2 and water vapour out (transpiration).' },
+    { g: 'point', p: 'guard-cells', say: "Two guard cells surround each stoma. When they swell with water the pore opens, and when they go limp it closes. Breeders working on drought tolerance often measure stomata.", n: 'Guard cells open and close the stoma. Stomatal density and behaviour matter for drought tolerance.' },
+    { g: 'cheer', say: "Put it together and you have photosynthesis: six carbon dioxide plus six water, powered by light, gives one glucose and six oxygen. Let's check what stuck!", n: 'Photosynthesis: 6CO2 + 6H2O + light energy → C6H12O6 + 6O2.' }
+  ],
+  quiz: [
+    { t: 'tap', q: 'Tap the layer where most photosynthesis happens.', part: 'palisade', why: 'Palisade cells sit just under the upper epidermis and are packed with chloroplasts.' },
+    { t: 'mc', q: 'What does xylem carry?', o: ['Sugars', 'Water and minerals', 'Pollen', 'Oxygen only'], a: 1, why: 'Xylem carries water and dissolved minerals up from the roots.' },
+    { t: 'tap', q: 'Tap the guard cells.', part: 'guard-cells', why: 'The guard cells are the pair of cells around the stoma on the lower epidermis.' },
+    { t: 'mc', q: 'Which gas enters the leaf through the stomata for photosynthesis?', o: ['Oxygen', 'Nitrogen', 'Carbon dioxide', 'Hydrogen'], a: 2, why: 'CO2 diffuses in through the stomata and through the spongy air spaces.' },
+    { t: 'mc', q: 'What is the main job of the waxy cuticle?', o: ['Making sugar', 'Reducing water loss', 'Absorbing minerals', 'Producing pollen'], a: 1, why: 'The waxy cuticle waterproofs the leaf surface.' }
+  ] },
+
+{ id: 'cell', tag: 'Biology', title: 'The Plant Cell', draw: dCell,
+  parts: { 'cell-wall': 'Cell wall', membrane: 'Cell membrane', cytoplasm: 'Cytoplasm', vacuole: 'Central vacuole', nucleus: 'Nucleus', chloroplast: 'Chloroplast', mitochondrion: 'Mitochondrion' },
+  steps: [
+    { g: 'wave', say: "Zoom way in. Every plant is built from cells, and if you work in tissue culture you'll grow whole plants from little clumps of them. Here's a typical plant cell.", n: 'Plants are made of cells; tissue culture grows plants from small groups of cells.' },
+    { g: 'highlight', p: 'cell-wall', say: "The cell wall is a rigid outer box made mostly of cellulose. It gives the cell its shape. Labs can strip it off with enzymes to make protoplasts, which can then be fused together.", n: 'Cell wall: rigid, mostly cellulose; gives shape. Removing it with enzymes gives protoplasts.' },
+    { g: 'point', p: 'membrane', say: "Just inside the wall is the cell membrane. It decides what goes in and out of the cell.", n: 'Cell membrane controls what enters and leaves the cell.' },
+    { g: 'circle', p: 'nucleus', say: "This is the nucleus, the control centre. It holds the chromosomes and their DNA. The genes a breeder works with live here.", n: 'Nucleus holds the chromosomes (DNA), including the genes breeders select for.' },
+    { g: 'circle', p: 'chloroplast', say: "Chloroplasts are where photosynthesis happens. They carry their own small DNA, and in most crops they pass down only through the mother, through the seed parent.", n: 'Chloroplasts do photosynthesis, have their own DNA, and are usually inherited from the mother (seed parent).' },
+    { g: 'circle', p: 'mitochondrion', say: "Mitochondria release energy from sugar. They are also mostly inherited from the mother, and certain mitochondrial genes cause male sterility, which seed companies use to make hybrid seed.", n: 'Mitochondria release energy (respiration). Mitochondrial genes can cause cytoplasmic male sterility (CMS), used for hybrid seed.' },
+    { g: 'highlight', p: 'vacuole', say: "The big central vacuole stores water and pushes outward on the wall. That pressure, called turgor, keeps the plant firm. When it drops, the plant wilts.", n: 'Central vacuole stores water; its turgor pressure keeps the plant firm (wilting = lost turgor).' },
+    { g: 'cheer', say: "Here's the big idea for tissue culture. Many plant cells are totipotent: one cell can, in the right conditions, regrow an entire plant. Quiz time!", n: 'Totipotency: a single plant cell can regenerate a whole plant. This is the basis of tissue culture.' }
+  ],
+  quiz: [
+    { t: 'tap', q: 'Tap the part that holds the chromosomes.', part: 'nucleus', why: 'The nucleus contains the chromosomes and DNA.' },
+    { t: 'mc', q: 'What is totipotency?', o: ['A cell dividing very fast', 'A single cell being able to regenerate a whole plant', 'A cell with two nuclei', 'A cell without a wall'], a: 1, why: 'Totipotency is the ability of one cell to regrow a complete plant.' },
+    { t: 'tap', q: 'Tap the structure whose pressure keeps the plant from wilting.', part: 'vacuole', why: 'The central vacuole creates turgor pressure.' },
+    { t: 'mc', q: 'In most crops, chloroplast DNA is inherited from...', o: ['The pollen parent', 'The seed (mother) parent', 'Both parents equally', 'Neither parent'], a: 1, why: 'Chloroplasts usually come through the egg cell, so they are maternally inherited.' },
+    { t: 'mc', q: 'The plant cell wall is mostly made of...', o: ['Cellulose', 'Protein', 'Starch', 'Chitin'], a: 0, why: 'Cellulose fibres make up most of the cell wall.' }
+  ] },
+
+{ id: 'flower', tag: 'Anatomy', title: 'Flower & Pollination', draw: dFlower,
+  parts: { sepal: 'Sepal', petal: 'Petal', stamen: 'Stamen', anther: 'Anther', filament: 'Filament', pistil: 'Pistil', stigma: 'Stigma', style: 'Style', ovary: 'Ovary', ovule: 'Ovule', receptacle: 'Receptacle', pollen: 'Pollen' },
+  steps: [
+    { g: 'wave', say: "Here's a flower cut down the middle. This is the breeder's workbench. If you know every part, you can control who pollinates whom.", n: 'Knowing flower parts lets a breeder control pollination.' },
+    { g: 'point', p: 'sepal', say: "At the base are the sepals, the green leaf-like parts that wrapped and protected the flower while it was a bud.", n: 'Sepals protect the flower bud (together they form the calyx).' },
+    { g: 'highlight', p: 'petal', say: "Petals are the colourful advertising that attracts pollinators like bees. Together the petals make up the corolla.", n: 'Petals (the corolla) attract pollinators.' },
+    { g: 'highlight', p: 'stamen', say: "These are the stamens, the male parts. Each stamen has two pieces.", n: 'Stamen = male part = filament + anther.' },
+    { g: 'point', p: 'filament', say: "The filament is the stalk that holds the anther up...", n: 'Filament: stalk supporting the anther.' },
+    { g: 'circle', p: 'anther', say: "...and the anther on top makes pollen. Pollen grains carry the male genetic contribution.", n: 'Anther produces pollen (male gametes).' },
+    { g: 'highlight', p: 'pistil', say: "In the centre is the pistil, the female part. It has three sections: stigma, style, and ovary.", n: 'Pistil (carpel) = female part = stigma + style + ovary.' },
+    { g: 'circle', p: 'stigma', say: "The stigma is the sticky landing pad that catches pollen. When the stigma is ready to accept pollen, we say it is receptive.", n: 'Stigma: sticky tip that receives pollen; "receptive" = ready for pollination.' },
+    { g: 'point', p: 'style', say: "After landing, a pollen grain grows a pollen tube down through the style to deliver sperm cells to the ovary.", n: 'Pollen tube grows down the style to reach the ovules.' },
+    { g: 'circle', p: 'ovule', say: "Inside the ovary are ovules. After fertilisation each ovule becomes a seed, and the ovary swells into the fruit.", n: 'After fertilisation: ovule → seed, ovary → fruit.' },
+    { g: 'think', say: "Here's the breeder's trick. If this flower has both male and female parts, it can pollinate itself. To make a controlled cross, you remove the anthers before they release pollen. That's called emasculation.", n: 'Self-pollination can happen in perfect flowers. Emasculation = removing the anthers before pollen is shed, to prevent selfing.' },
+    { g: 'cheer', say: "Then you dust pollen from your chosen father plant onto the stigma and cover the flower with a bag. Let's see if you can find the parts!", n: 'Controlled cross: emasculate, apply chosen pollen to the receptive stigma, then bag.' }
+  ],
+  quiz: [
+    { t: 'tap', q: 'Tap the part that makes pollen.', part: 'anther', why: 'The anthers, on top of the filaments, produce pollen.' },
+    { t: 'tap', q: 'Tap the sticky part that receives pollen.', part: 'stigma', why: 'The stigma is the top of the pistil.' },
+    { t: 'mc', q: 'After fertilisation, an ovule develops into...', o: ['A fruit', 'A seed', 'A petal', 'A new anther'], a: 1, why: 'The ovule becomes the seed; the ovary becomes the fruit.' },
+    { t: 'tap', q: 'Tap the ovary.', part: 'ovary', why: 'The ovary is the swollen base of the pistil holding the ovules.' },
+    { t: 'mc', q: 'What does "emasculation" mean in plant breeding?', o: ['Removing the petals', 'Removing the anthers before pollen is shed', 'Cutting off the stigma', 'Covering the plant with a bag'], a: 1, why: 'Removing the anthers stops the flower from pollinating itself.' }
+  ] },
+
+{ id: 'genetics', tag: 'Genetics', title: 'Genes & the Punnett Square', draw: dPunnett,
+  parts: { parent1: 'Parent 1 (Pp)', parent2: 'Parent 2 (Pp)', gametes: 'Gametes', 'sq-PP': 'PP offspring', het: 'Pp offspring', 'sq-pp': 'pp offspring', ratio: 'Phenotype ratio' },
+  steps: [
+    { g: 'wave', say: "Breeding is applied genetics. Let's predict offspring with a Punnett square, using one gene for flower colour.", n: 'A Punnett square predicts offspring from a cross.' },
+    { g: 'think', say: "A gene is a stretch of DNA for one trait. Different versions of a gene are called alleles. Big P is purple, small p is white. Every plant carries two alleles, one from each parent.", n: 'Gene = DNA for a trait. Alleles = versions of a gene. Each plant has 2 alleles per gene (one from each parent).' },
+    { g: 'point', p: 'parent1', say: "Purple is dominant: one copy of big P is enough to make the flower purple. White is recessive and only shows when there's no big P at all. Both parents here are Pp, so both look purple.", n: 'Dominant allele shows with one copy. Recessive shows only with two copies (pp).' },
+    { g: 'circle', p: 'gametes', say: "When a Pp plant makes pollen or eggs, the two alleles separate. Half the gametes get P and half get p. This is Mendel's law of segregation.", n: "Law of segregation: the 2 alleles separate into gametes, 50% P and 50% p." },
+    { g: 'circle', p: 'sq-PP', say: "Fill in the boxes by combining each row with each column. Top left: P plus P makes PP. That's homozygous dominant, with two identical alleles.", n: 'Homozygous = two identical alleles (PP or pp).' },
+    { g: 'highlight', p: 'het', say: "These two boxes are Pp. That's heterozygous, two different alleles. They're still purple because P is dominant.", n: 'Heterozygous = two different alleles (Pp).' },
+    { g: 'circle', p: 'sq-pp', say: "Only this last box, pp, is white. The recessive trait was hidden in both parents and showed up again in the offspring.", n: 'Recessive traits can hide in heterozygous parents and reappear in their offspring.' },
+    { g: 'point', p: 'ratio', say: "So the phenotype, what you see, is three purple to one white. The genotype, the actual alleles, is one PP, two Pp, one pp.", n: 'Pp × Pp: phenotype 3:1, genotype 1:2:1. Phenotype = what you see; genotype = the alleles.' },
+    { g: 'cheer', say: "Breeder's tip: a purple plant could be PP or Pp. To find out, cross it with a white pp plant. If any white offspring appear, it was Pp. That's a test cross. Quiz time!", n: 'Test cross: cross an unknown dominant-looking plant with pp. Any recessive offspring means it was heterozygous.' }
+  ],
+  quiz: [
+    { t: 'mc', q: 'Pp × Pp gives what phenotype ratio?', o: ['1 : 1', '3 : 1', '1 : 2 : 1', 'All purple'], a: 1, why: 'Three of four boxes have at least one P, so 3 purple : 1 white.' },
+    { t: 'tap', q: 'Tap the box that will have white flowers.', part: 'sq-pp', why: 'Only pp lacks the dominant allele.' },
+    { t: 'mc', q: 'A plant with genotype Pp is...', o: ['Homozygous dominant', 'Homozygous recessive', 'Heterozygous', 'Sterile'], a: 2, why: 'Two different alleles = heterozygous.' },
+    { t: 'mc', q: 'Why do a test cross with a pp plant?', o: ['To make the flowers bigger', 'To find out if a dominant-looking plant is PP or Pp', 'To remove the recessive allele', 'To double the chromosomes'], a: 1, why: 'Recessive offspring reveal a hidden p allele in the unknown parent.' },
+    { t: 'mc', q: 'What is an allele?', o: ['A type of flower', 'A version of a gene', 'A whole chromosome', 'A cell organelle'], a: 1, why: 'Alleles are alternative versions of the same gene.' }
+  ] },
+
+{ id: 'breeding', tag: 'Breeding', title: 'Making a Cross', draw: dBreeding,
+  parts: { parentA: 'Parent A (female)', parentB: 'Parent B (male)', emasculate: 'Emasculation', pollinate: 'Pollination', bag: 'Bag & tag', f1: 'F1 generation', f2: 'F2 generation', backcross: 'Backcross', select: 'Selection' },
+  steps: [
+    { g: 'wave', say: "Now let's put it all together and run a real breeding project. The goal: combine the best traits of two parents into one plant.", n: 'Breeding goal: combine desirable traits from different parents.' },
+    { g: 'point', p: 'parentA', say: "Parent A has high yield. We'll use it as the female, the seed parent. When you write a cross, the female always goes first: A times B.", n: 'Choose parents for complementary traits. Notation: female × male (female listed first).' },
+    { g: 'point', p: 'parentB', say: "Parent B is disease resistant, so it will be the male, the pollen parent.", n: 'Pollen parent = male parent.' },
+    { g: 'circle', p: 'emasculate', say: "Step one: emasculate Parent A. Open the flower bud and remove every anther with fine forceps before they shed pollen.", n: 'Emasculate the female at bud stage, removing all anthers with forceps before they shed pollen.' },
+    { g: 'circle', p: 'pollinate', say: "Step two: once A's stigma is receptive, brush or tap pollen from B's anthers onto it.", n: "Pollinate: transfer the male's pollen onto the female's receptive stigma." },
+    { g: 'circle', p: 'bag', say: "Step three: cover the flower with a bag to keep out stray pollen, and tag it with the cross, A times B, and the date. A cross with no records is wasted.", n: 'Bag to block stray pollen; tag with the cross (A × B) and date. Keep records!' },
+    { g: 'highlight', p: 'f1', say: "The seeds give the F1 generation. If the parents were pure lines, the F1 plants are uniform, and they often show hybrid vigour, called heterosis.", n: 'F1 = first filial generation; uniform when parents are pure lines; often shows hybrid vigour (heterosis).' },
+    { g: 'highlight', p: 'f2', say: "Self the F1 and you get the F2. Here the traits segregate and shuffle, just like our Punnett square. This is the most variable generation, so grow a big population.", n: 'F2 = selfed F1; traits segregate; most variation, so grow large populations.' },
+    { g: 'point', p: 'select', say: "Now select the plants that have both high yield and resistance, and keep selfing and selecting for several generations, around F5 to F8, until the line breeds true.", n: 'Select the best F2 plants, then self and select each generation (pedigree method) until lines breed true (~F5–F8).' },
+    { g: 'circle', p: 'backcross', say: "Another option is backcrossing. Cross the F1 back to Parent A again and again, keeping only plants with B's resistance. Each backcross recovers about half of what's left of A: about 75 percent after the first, 87.5 after the second, and over 99 percent after six.", n: 'Backcrossing: cross back to the recurrent parent while keeping one trait. Recovery ≈ 75% (BC1), 87.5% (BC2), 93.75% (BC3)... >99% by BC6.' },
+    { g: 'cheer', say: "That's the core loop of plant breeding: cross, grow, select, repeat. Let's test your skills!", n: 'Breeding loop: cross → grow → select → repeat.' }
+  ],
+  quiz: [
+    { t: 'tap', q: 'Tap the step that stops the female flower from pollinating itself.', part: 'emasculate', why: 'Emasculation removes the anthers before they can shed pollen.' },
+    { t: 'mc', q: 'Why bag a flower after pollinating it?', o: ['To keep it warm', 'To keep out stray pollen', 'To speed up seed growth', 'To stop insects eating leaves'], a: 1, why: "The bag makes sure only your chosen pollen fertilises the flower." },
+    { t: 'mc', q: 'In the cross "A × B", which parent is the female?', o: ['A', 'B', 'Either one', 'Neither one'], a: 0, why: 'By convention the female (seed) parent is written first.' },
+    { t: 'mc', q: 'Which generation shows the most segregation and variation?', o: ['Parents', 'F1', 'F2', 'BC6'], a: 2, why: 'F2 plants reshuffle the parental alleles.' },
+    { t: 'mc', q: 'Roughly how much recurrent-parent genome is recovered after the second backcross (BC2)?', o: ['50%', '75%', '87.5%', '99%'], a: 2, why: 'Each backcross halves the remaining donor part: 50 → 75 → 87.5%.' }
+  ] },
+
+{ id: 'culture', tag: 'Lab', title: 'Plant Tissue Culture', draw: dCulture,
+  parts: { mother: 'Stock plant', explant: 'Explant', sterilize: 'Surface sterilisation', medium: 'Initiation on medium', callus: 'Callus', shoots: 'Shoot multiplication', rooting: 'Rooting', acclimate: 'Acclimatisation' },
+  steps: [
+    { g: 'wave', say: "Welcome to the lab! Tissue culture means growing plants from small pieces in sterile jars. It lets you clone an elite plant thousands of times, and it works because of totipotency.", n: 'Tissue culture (micropropagation) clones plants from small pieces in sterile conditions; based on totipotency.' },
+    { g: 'point', p: 'mother', say: "Start with a healthy stock plant that is true to type. Clean, vigorous mother plants mean far less contamination later.", n: 'Start with a healthy, pest-free, true-to-type stock plant.' },
+    { g: 'circle', p: 'explant', say: "Cut a small piece called an explant. Shoot tips and nodal segments are favourites, because they already contain buds.", n: 'Explant = the piece you culture: shoot tip, nodal segment, leaf piece, embryo...' },
+    { g: 'circle', p: 'sterilize', say: "Surface sterilise it. A common recipe is a quick dip in 70 percent ethanol, then about 10 to 20 minutes in dilute bleach, then three rinses in sterile water. Do everything in a laminar flow hood.", n: 'Surface sterilise: ~70% ethanol briefly, then dilute bleach (~0.5–1% sodium hypochlorite) for ~10–20 min, then 3 sterile-water rinses. Work in a laminar flow hood.' },
+    { g: 'point', p: 'medium', say: "Place it on culture medium. The classic is MS medium, with about 30 grams per litre of sugar and 7 to 8 grams of agar. Adjust the pH to about 5.8, then autoclave at 121 degrees Celsius.", n: 'MS (Murashige & Skoog) medium + ~30 g/L sucrose + ~7–8 g/L agar, pH ~5.7–5.8, autoclaved at 121 °C (~15–20 min).' },
+    { g: 'think', say: "Now the most important rule: hormones steer growth. High auxin compared with cytokinin makes roots. High cytokinin compared with auxin makes shoots. A balance of the two makes callus.", n: 'Hormone balance (Skoog & Miller): high auxin:cytokinin → roots; high cytokinin:auxin → shoots; roughly balanced → callus.' },
+    { g: 'highlight', p: 'callus', say: "Callus is a lump of undifferentiated cells. Some protocols go through callus, but for clonal propagation we usually avoid it because it can cause genetic changes.", n: 'Callus = undifferentiated cell mass; can cause somaclonal variation, so clonal protocols often avoid it.' },
+    { g: 'highlight', p: 'shoots', say: "For multiplication, add a cytokinin like BAP. One shoot becomes a cluster. Split them and subculture onto fresh medium every 3 to 6 weeks.", n: 'Shoot multiplication: cytokinin (e.g. BAP); subculture every ~3–6 weeks.' },
+    { g: 'circle', p: 'rooting', say: "Move single shoots to a rooting medium with an auxin like IBA or NAA, and roots appear in a few weeks.", n: 'Rooting: auxin (e.g. IBA, NAA).' },
+    { g: 'point', p: 'acclimate', say: "Finally, acclimatise. Jar plants are used to near 100 percent humidity, so pot them up under a dome and lower the humidity gradually over a few weeks.", n: 'Acclimatisation: move to soil under high humidity, then reduce humidity gradually over ~2–4 weeks.' },
+    { g: 'cheer', say: "Breeders also use tissue culture for embryo rescue in wide crosses, doubled haploids for instant pure lines, and meristem culture for virus-free stock. Last quiz, let's go!", n: 'Breeding uses: embryo rescue, doubled haploids, meristem culture for virus-free plants, mass cloning of elite lines.' }
+  ],
+  quiz: [
+    { t: 'tap', q: 'Tap the stage that shows an undifferentiated mass of cells.', part: 'callus', why: 'Callus is the lumpy undifferentiated growth.' },
+    { t: 'mc', q: 'High cytokinin relative to auxin mainly promotes...', o: ['Roots', 'Shoots', 'Flowers', 'Seed dormancy'], a: 1, why: 'Cytokinin-dominant media drive shoot formation.' },
+    { t: 'mc', q: 'A typical pH for MS medium before autoclaving is about...', o: ['3.0', '5.8', '7.5', '9.0'], a: 1, why: 'Most protocols use pH 5.7–5.8.' },
+    { t: 'mc', q: 'Why surface-sterilise the explant?', o: ['To make it grow faster', 'To kill microbes that would overgrow the culture', 'To remove its DNA', 'To make it photosynthesise'], a: 1, why: 'Bacteria and fungi grow far faster than plant tissue on sugary medium.' },
+    { t: 'tap', q: 'Tap the stage where plants are slowly adjusted to normal humidity.', part: 'acclimate', why: 'Acclimatisation hardens plants off under a dome.' }
+  ] }
+];
+
+/* ---------- state ---------- */
+const $ = id => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('fern.' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('fern.' + k, JSON.stringify(v)); } catch {} }
+};
+const S = { li: 0, si: 0, playing: false, token: 0, seen: new Set(), quiz: null, voice: true, rate: 1 };
+const scores = store.get('scores', {});
+const notes = store.get('notes', {});
+const caps = {};
+function cap(name) { if (!(name in caps)) caps[name] = window.claude?.use ? window.claude.use(name).catch(() => null) : Promise.resolve(null); return caps[name]; }
+
+const svg = $('stage'), diagram = $('diagram'), teacher = $('teacher');
+const armR = $('armR'), armL = $('armL');
+const SH = { x: 205, y: 352 }, ARM = 116;
+
+/* ---------- course map ---------- */
+function renderCourse() {
+  const nav = $('course');
+  nav.querySelectorAll('.lesson-btn').forEach(b => b.remove());
+  LESSONS.forEach((l, i) => {
+    const b = document.createElement('button');
+    const sc = scores[l.id];
+    b.className = 'lesson-btn' + (sc != null && sc >= 4 ? ' done' : '');
+    b.setAttribute('aria-current', i === S.li ? 'true' : 'false');
+    b.innerHTML = `<span class="num">${sc != null && sc >= 4 ? '✓' : i + 1}</span><span class="t">${l.title}</span><span class="meta"><span class="tag">${l.tag}</span>${sc != null ? `<span>best ${sc}/${l.quiz.length}</span>` : ''}</span>`;
+    b.onclick = () => loadLesson(i);
+    nav.appendChild(b);
+  });
+  const passed = LESSONS.filter(l => (scores[l.id] ?? 0) >= 4).length;
+  $('meter').style.width = (passed / LESSONS.length * 100) + '%';
+  $('progText').textContent = `${passed} of ${LESSONS.length} lessons passed`;
+}
+
+/* ---------- teacher animation ---------- */
+function resetPose() {
+  diagram.querySelectorAll('.hl').forEach(e => e.classList.remove('hl'));
+  diagram.querySelectorAll('.lbl.on').forEach(e => e.classList.remove('on'));
+  ['laser', 'laserDot', 'ring'].forEach(id => $(id).classList.remove('on'));
+  teacher.classList.remove('thinking', 'cheering', 'happy');
+  armR.style.transform = 'rotate(70deg)';
+  armL.classList.remove('wave'); armL.style.transform = 'rotate(0deg)';
+}
+function partBox(id) {
+  const els = diagram.querySelectorAll(`[data-part="${id}"]`);
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  els.forEach(e => { const b = e.getBBox(); x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.width); y1 = Math.max(y1, b.y + b.height); });
+  if (!els.length) return null;
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, els };
+}
+function aim(x, y) {
+  let a = Math.atan2(y - SH.y, x - SH.x) * 180 / Math.PI;
+  a = Math.max(-75, Math.min(80, a));
+  armR.style.transform = `rotate(${a}deg)`;
+  const r = a * Math.PI / 180;
+  return { x: SH.x + ARM * Math.cos(r), y: SH.y + ARM * Math.sin(r) };
+}
+function gesture(g, part) {
+  resetPose();
+  const tok = S.token;
+  const later = (fn, ms) => setTimeout(() => { if (tok === S.token) fn(); }, ms);
+  if (g === 'wave') { armL.classList.add('wave'); teacher.classList.add('happy'); later(() => teacher.classList.remove('happy'), 1600); return; }
+  if (g === 'think') { teacher.classList.add('thinking'); return; }
+  if (g === 'cheer') { teacher.classList.add('cheering', 'happy'); armL.style.transform = 'rotate(155deg)'; return; }
+  const b = part && partBox(part);
+  if (!b) return;
+  diagram.querySelectorAll(`.lbl[data-for="${part}"]`).forEach(e => e.classList.add('on'));
+  // point at one concrete shape (a part can be several separate shapes), circle/highlight the whole part
+  const first = g === 'point' && b.els[0].querySelector('path,rect,circle,ellipse,line');
+  if (first) { const fb = first.getBBox(); b.cx = fb.x + fb.width / 2; b.cy = fb.y + fb.height / 2; }
+  const hand = aim(b.cx, b.cy);
+  if (g === 'highlight') { b.els.forEach(e => e.classList.add('hl')); return; }
+  later(() => {
+    if (g === 'point') {
+      const las = $('laser'), dot = $('laserDot');
+      las.setAttribute('x1', hand.x); las.setAttribute('y1', hand.y); las.setAttribute('x2', b.cx); las.setAttribute('y2', b.cy);
+      const len = Math.hypot(b.cx - hand.x, b.cy - hand.y);
+      las.style.strokeDasharray = len; las.style.setProperty('--len', len);
+      dot.setAttribute('cx', b.cx); dot.setAttribute('cy', b.cy);
+      las.classList.remove('on'); void las.getBBox(); las.classList.add('on'); dot.classList.add('on');
+    }
+    if (g === 'circle') {
+      const ring = $('ring');
+      const rx = Math.max(24, b.w / 2 + 14), ry = Math.max(24, b.h / 2 + 14);
+      ring.setAttribute('cx', b.cx); ring.setAttribute('cy', b.cy); ring.setAttribute('rx', rx); ring.setAttribute('ry', ry);
+      const per = Math.PI * (3 * (rx + ry) - Math.sqrt((3 * rx + ry) * (rx + 3 * ry)));
+      ring.style.strokeDasharray = per; ring.style.setProperty('--len', per);
+      ring.classList.remove('on'); void ring.getBBox(); ring.classList.add('on');
+      const las = $('laser');
+      las.setAttribute('x1', hand.x); las.setAttribute('y1', hand.y);
+      const ang = Math.atan2(hand.y - b.cy, hand.x - b.cx);
+      const ex = b.cx + rx * Math.cos(ang), ey = b.cy + ry * Math.sin(ang);
+      las.setAttribute('x2', ex); las.setAttribute('y2', ey);
+      const len = Math.hypot(ex - hand.x, ey - hand.y);
+      las.style.strokeDasharray = len; las.style.setProperty('--len', len);
+      las.classList.remove('on'); void las.getBBox(); las.classList.add('on');
+    }
+  }, 480);
+}
+
+/* ---------- speech ---------- */
+let voicePick = null;
+function pickVoice() {
+  if (!window.speechSynthesis) return;
+  const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
+  voicePick = vs.find(v => /female|samantha|zira|jenny|aria|google uk english female|libby|sonia/i.test(v.name)) || vs.find(v => /google/i.test(v.name)) || vs[0] || null;
+}
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function stopSpeech() { try { window.speechSynthesis?.cancel(); } catch {} teacher.classList.remove('talking'); }
+function speak(text, done) {
+  stopSpeech();
+  const tok = S.token;
+  const finish = () => { if (tok !== S.token) return; teacher.classList.remove('talking'); done && done(); };
+  teacher.classList.add('talking');
+  const est = Math.max(2200, text.split(/\s+/).length * 360 / S.rate);
+  if (!S.voice || !window.speechSynthesis) { setTimeout(finish, est); return; }
+  try {
+    const u = new SpeechSynthesisUtterance(text);
+    if (voicePick) u.voice = voicePick;
+    u.rate = S.rate; u.pitch = 1.12;
+    let ended = false;
+    u.onend = u.onerror = () => { if (!ended) { ended = true; finish(); } };
+    speechSynthesis.speak(u);
+    setTimeout(() => { if (!ended) { ended = true; finish(); } }, est * 2.2 + 3000);
+  } catch { setTimeout(finish, est); }
+}
+
+/* ---------- lecture ---------- */
+function lesson() { return LESSONS[S.li]; }
+function loadLesson(i) {
+  S.token++; stopSpeech();
+  S.li = i; S.si = 0; S.playing = false; S.seen = new Set([0]); S.quiz = null;
+  const l = lesson();
+  diagram.innerHTML = l.draw();
+  $('lessonTag').textContent = l.tag; $('lessonTitle').textContent = l.title;
+  $('notesTitle').textContent = 'Notes: ' + l.title;
+  $('notes').value = notes[l.id] || '';
+  $('quiz').hidden = true; $('captionBox').hidden = false; $('controls').hidden = false;
+  svg.classList.remove('tapping');
+  $('aiNotesOut').hidden = true;
+  renderCourse(); renderSuggest();
+  showStep(0, false);
+  setPlayBtn();
+}
+function renderDots() {
+  const d = $('dots'); d.innerHTML = '';
+  lesson().steps.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = (i === S.si ? 'cur' : S.seen.has(i) ? 'seen' : '');
+    b.setAttribute('aria-label', 'Step ' + (i + 1));
+    b.onclick = () => showStep(i, true);
+    d.appendChild(b);
+  });
+}
+function showStep(i, talk) {
+  const steps = lesson().steps;
+  S.token++; stopSpeech();
+  S.si = i; S.seen.add(i);
+  const s = steps[i];
+  $('say').textContent = s.say;
+  $('stepCount').textContent = `Step ${i + 1} of ${steps.length}`;
+  $('prevBtn').disabled = i === 0;
+  $('nextBtn').disabled = i === steps.length - 1;
+  renderDots();
+  gesture(s.g, s.p);
+  if (talk) speak(s.say, () => {
+    if (!S.playing) return;
+    const tok = S.token;
+    setTimeout(() => { if (tok !== S.token || !S.playing) return; if (S.si < steps.length - 1) showStep(S.si + 1, true); else { S.playing = false; setPlayBtn(); startQuiz(); } }, 800);
+  });
+}
+function setPlayBtn() {
+  const b = $('playBtn');
+  b.innerHTML = S.playing ? '&#10073;&#10073; Pause' : (S.seen.size > 1 ? '&#9654; Resume' : '&#9654; Start lecture');
+}
+$('playBtn').onclick = () => {
+  S.playing = !S.playing; setPlayBtn();
+  if (S.playing) showStep(S.si, true); else { S.token++; stopSpeech(); }
+};
+$('prevBtn').onclick = () => showStep(Math.max(0, S.si - 1), true);
+$('nextBtn').onclick = () => showStep(Math.min(lesson().steps.length - 1, S.si + 1), true);
+$('quizBtn').onclick = () => { S.playing = false; setPlayBtn(); startQuiz(); };
+$('tLabels').onclick = e => { const on = e.currentTarget.getAttribute('aria-pressed') !== 'true'; e.currentTarget.setAttribute('aria-pressed', on); svg.classList.toggle('show-labels', on); };
+$('tVoice').onclick = e => { S.voice = e.currentTarget.getAttribute('aria-pressed') !== 'true'; e.currentTarget.setAttribute('aria-pressed', S.voice); e.currentTarget.textContent = S.voice ? 'Voice on' : 'Voice off'; if (!S.voice) window.speechSynthesis?.cancel(); };
+$('rate').onchange = e => S.rate = +e.target.value;
+
+/* ---------- quiz ---------- */
+function startQuiz(questions) {
+  S.token++; stopSpeech(); resetPose();
+  const l = lesson();
+  S.quiz = { qs: questions || l.quiz, i: 0, score: 0, answered: false, ai: !!questions };
+  $('captionBox').hidden = true; $('controls').hidden = true; $('quiz').hidden = false;
+  svg.classList.remove('show-labels'); $('tLabels').setAttribute('aria-pressed', 'false');
+  gesture('cheer');
+  renderQuestion();
+  $('quiz').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function renderQuestion() {
+  const Q = S.quiz, q = Q.qs[Q.i], box = $('quiz');
+  Q.answered = false;
+  svg.classList.toggle('tapping', q.t === 'tap');
+  box.innerHTML = `<div class="quiz-top"><h3>Quiz: ${lesson().title}${Q.ai ? ' (fresh set)' : ''}</h3><span class="qnum">Question ${Q.i + 1} of ${Q.qs.length} · score ${Q.score}</span></div>
+    <p class="qtext">${q.q}</p>
+    ${q.t === 'tap' ? `<div class="tapnote">Tap the right spot on the diagram above.</div>` : `<div class="opts">${q.o.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div>`}
+    <div id="fb"></div>
+    <div class="row"><button class="btn" id="qBack">Back to lecture</button></div>`;
+  box.querySelectorAll('.opt').forEach(b => b.onclick = () => answerMC(+b.dataset.k));
+  $('qBack').onclick = endQuiz;
+  speak(q.q);
+}
+function feedback(ok, text) {
+  const Q = S.quiz;
+  Q.answered = true;
+  if (ok) Q.score++;
+  svg.classList.remove('tapping');
+  const last = Q.i === Q.qs.length - 1;
+  $('fb').innerHTML = `<div class="feedback ${ok ? 'good' : 'bad'}"><b>${ok ? 'Correct!' : 'Not quite.'}</b>${text}</div>
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="qNext">${last ? 'See my score' : 'Next question'}</button></div>`;
+  $('qNext').onclick = () => { if (last) finishQuiz(); else { Q.i++; renderQuestion(); } };
+  $('qNext').focus({ preventScroll: true });
+  speak((ok ? 'Correct! ' : 'Not quite. ') + text);
+}
+function answerMC(k) {
+  const Q = S.quiz, q = Q.qs[Q.i];
+  if (Q.answered) return;
+  $('quiz').querySelectorAll('.opt').forEach(b => { b.disabled = true; const kk = +b.dataset.k; if (kk === q.a) b.classList.add('right'); else if (kk === k) b.classList.add('wrong'); });
+  const ok = k === q.a;
+  gesture(ok ? 'cheer' : 'think');
+  feedback(ok, ' ' + (q.why || ''));
+}
+diagram.addEventListener('click', e => {
+  const Q = S.quiz;
+  if (!Q || Q.answered || $('quiz').hidden) return;
+  const q = Q.qs[Q.i];
+  if (q.t !== 'tap') return;
+  const hit = e.target.closest('[data-part]');
+  if (!hit) return;
+  const ok = !!e.target.closest(`[data-part="${q.part}"]`);
+  const name = lesson().parts[hit.dataset.part] || hit.dataset.part;
+  if (ok) gesture('cheer'); else gesture('circle', q.part);
+  feedback(ok, ok ? ' ' + q.why : ` You tapped the ${name.toLowerCase()}. I've circled the right one. ${q.why}`);
+});
+function finishQuiz() {
+  const Q = S.quiz, l = lesson(), n = Q.qs.length;
+  const pass = Q.score >= Math.ceil(n * .8);
+  if (!Q.ai && (scores[l.id] == null || Q.score > scores[l.id])) { scores[l.id] = Q.score; store.set('scores', scores); }
+  renderCourse();
+  gesture(pass ? 'cheer' : 'think');
+  const next = S.li < LESSONS.length - 1;
+  $('quiz').innerHTML = `<div class="quiz-top"><h3>Quiz complete</h3></div>
+    <div class="score">${Q.score} / ${n}</div>
+    <p style="margin:0">${pass ? 'Great work. That lesson is locked in.' : 'Pass mark is 4 out of 5. Rewatch the steps you missed and try again.'}</p>
+    <div class="row">
+      <button class="btn" id="qRetake">Retake quiz</button>
+      <button class="btn" id="qAi" hidden>New questions from Prof. Fern</button>
+      <button class="btn" id="qLecture">Rewatch lecture</button>
+      ${next ? `<button class="btn primary" id="qNextL">Next lesson: ${LESSONS[S.li + 1].title}</button>` : ''}
+    </div><p class="hint" id="qAiMsg"></p>`;
+  speak(pass ? `You scored ${Q.score} out of ${n}. Wonderful! You've got this one.` : `You scored ${Q.score} out of ${n}. Let's review and try again. You'll get it.`);
+  $('qRetake').onclick = () => startQuiz();
+  $('qLecture').onclick = endQuiz;
+  if (next) $('qNextL').onclick = () => loadLesson(S.li + 1);
+  cap('sample').then(s => { if (s && $('qAi')) { $('qAi').hidden = false; $('qAi').onclick = () => aiQuiz(s); } });
+}
+function endQuiz() {
+  S.token++; stopSpeech(); S.quiz = null;
+  svg.classList.remove('tapping');
+  $('quiz').hidden = true; $('captionBox').hidden = false; $('controls').hidden = false;
+  showStep(S.si, false);
+}
+
+/* ---------- notes ---------- */
+let saveT;
+$('notes').addEventListener('input', () => { clearTimeout(saveT); saveT = setTimeout(() => { notes[lesson().id] = $('notes').value; store.set('notes', notes); }, 300); });
+function appendNote(text) {
+  const t = $('notes');
+  t.value = (t.value.trim() ? t.value.replace(/\s*$/, '\n') : '') + text;
+  notes[lesson().id] = t.value; store.set('notes', notes);
+  t.scrollTop = t.scrollHeight;
+}
+$('pinBtn').onclick = () => { appendNote('- ' + lesson().steps[S.si].n); toast('Pinned to your notebook'); showTab('notes'); };
+$('buildNotes').onclick = () => { appendNote(`## Key points: ${lesson().title}\n` + lesson().steps.map(s => '- ' + s.n).join('\n')); toast('Key points added'); };
+function allNotesMd() {
+  let md = `# Professor Fern's Greenhouse: my notes\n\n`;
+  LESSONS.forEach(l => { const n = (notes[l.id] || '').trim(); if (n) md += `# ${l.title}\n\n${n}\n\n`; });
+  return md;
+}
+$('dlNotes').onclick = async () => {
+  notes[lesson().id] = $('notes').value; store.set('notes', notes);
+  const md = allNotesMd();
+  if (!LESSONS.some(l => (notes[l.id] || '').trim())) { toast('Your notebook is empty. Pin some key points first.'); return; }
+  const dl = await cap('downloads');
+  if (dl) {
+    try { await dl.save({ filename: 'prof-fern-plant-notes.md', data: md }); toast('Notes downloaded'); }
+    catch (e) { toast(e?.code === 'declined' ? 'Download cancelled' : 'Download unavailable here. Use Copy instead.'); }
+    return;
+  }
+  try {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([md], { type: 'text/markdown' }));
+    a.download = 'prof-fern-plant-notes.md'; document.body.appendChild(a); a.click(); a.remove();
+  } catch { toast('Download unavailable here. Use Copy instead.'); }
+};
+$('copyNotes').onclick = async () => {
+  const md = allNotesMd();
+  try { await navigator.clipboard.writeText(md); toast('All notes copied'); }
+  catch { $('notes').select(); toast('Press Ctrl+C / Cmd+C to copy'); }
+};
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 2200); }
+
+/* ---------- tabs ---------- */
+function showTab(which) {
+  const n = which === 'notes';
+  $('tabNotes').setAttribute('aria-selected', n); $('tabAsk').setAttribute('aria-selected', !n);
+  $('paneNotes').hidden = !n; $('paneAsk').hidden = n;
+}
+$('tabNotes').onclick = () => showTab('notes');
+$('tabAsk').onclick = () => showTab('ask');
+
+/* ---------- AI: ask, notes, quiz ---------- */
+const chatLog = [];
+function addMsg(cls, text) { const d = document.createElement('div'); d.className = 'msg ' + cls; d.textContent = text; $('chat').appendChild(d); $('chat').scrollTop = 1e6; return d; }
+const SUGGEST = {
+  body: ['Why do cuttings need a node?', 'What is a taproot vs fibrous roots?'],
+  leaf: ['Why are stomata mostly on the underside?', 'How does drought affect stomata?'],
+  cell: ['What is a protoplast used for?', 'What is cytoplasmic male sterility?'],
+  flower: ['How do I tell when a stigma is receptive?', 'What is a self-incompatible plant?'],
+  genetics: ['What happens with two genes at once?', 'What is incomplete dominance?'],
+  breeding: ['What is heterosis exactly?', 'Pedigree vs bulk method?'],
+  culture: ['Why does my culture turn brown?', 'What is somaclonal variation?']
+};
+function renderSuggest() {
+  const box = $('suggest'); box.innerHTML = '';
+  (SUGGEST[lesson().id] || []).forEach(q => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.textContent = q; b.onclick = () => { $('askInput').value = q; $('askForm').requestSubmit(); }; box.appendChild(b); });
+}
+function lessonContext() {
+  const l = lesson();
+  return `Lesson: "${l.title}" (${l.tag}).\nDiagram parts (id: name): ${Object.entries(l.parts).map(([k, v]) => `${k}: ${v}`).join('; ')}.\nLecture key points:\n${l.steps.map(s => '- ' + s.n).join('\n')}`;
+}
+const errCopy = c => c === 'not_granted' ? 'Prof. Fern needs permission to use Claude for this. Allow it when asked.' : c === 'rate_limited' ? 'Too many questions at once. Wait a moment and try again.' : 'Prof. Fern could not answer just now. Try again in a moment.';
+
+cap('sample').then(sample => {
+  if (!sample) { $('askStatus').textContent = 'Live questions work when this page is opened in Claude. The lectures, quizzes and notebook work everywhere.'; return; }
+  $('askStatus').textContent = "Ask anything about the current lesson. Prof. Fern answers out loud and points at the diagram. Answers use your Claude account.";
+  $('askInput').disabled = false; $('askBtn').disabled = false; $('aiNotes').hidden = false;
+  addMsg('fern', "Ask me anything about this lesson. I'll point things out on the board as I explain.");
+  let busy = false;
+  $('askForm').onsubmit = async e => {
+    e.preventDefault();
+    const q = $('askInput').value.trim(); if (!q || busy) return;
+    busy = true; $('askBtn').disabled = true; $('askInput').value = '';
+    addMsg('me', q);
+    const pend = addMsg('fern', 'Thinking...');
+    S.token++; stopSpeech(); gesture('think');
+    const ids = Object.keys(lesson().parts);
+    const history = chatLog.slice(-6).map(m => `${m.r === 'u' ? 'Student' : 'Professor Fern'}: ${m.t}`).join('\n');
+    const prompt = `You are Professor Fern, a warm, precise plant science teacher (plant anatomy, plant biology, genetics, plant breeding, tissue culture) inside an interactive lesson app. A diagram is on screen next to you.\n\n${lessonContext()}\n\n${history ? 'Conversation so far:\n' + history + '\n\n' : ''}Student's question: "${q}"\n\nAnswer accurately in 2-5 short sentences of plain spoken English, as a teacher talking (it will be read aloud: no markdown, no lists, no emoji). If the question is off-topic, gently steer back to plants. If one diagram part helps explain, pick its id.\nReturn only JSON: {"answer": string, "part": one of ${JSON.stringify(ids)} or null, "gesture": "point" | "circle" | "highlight" | "think" | "cheer"}`;
+    try {
+      const r = await sample.json(prompt, { cache: false });
+      const ans = String(r?.answer || '').trim() || "Hmm, let me think about that differently. Could you rephrase?";
+      pend.textContent = ans;
+      chatLog.push({ r: 'u', t: q }, { r: 'f', t: ans });
+      const part = ids.includes(r?.part) ? r.part : null;
+      const g = ['point', 'circle', 'highlight', 'think', 'cheer'].includes(r?.gesture) ? r.gesture : (part ? 'point' : 'think');
+      S.token++; gesture(part ? (g === 'think' || g === 'cheer' ? 'point' : g) : g, part);
+      if (!$('quiz').hidden && S.quiz) {} else if (part) svg.classList.remove('tapping');
+      speak(ans);
+    } catch (err) { pend.textContent = errCopy(err?.code); gesture('think'); }
+    busy = false; $('askBtn').disabled = false;
+  };
+  $('aiNotes').onclick = async () => {
+    const btn = $('aiNotes'); btn.disabled = true;
+    $('aiNotesOut').hidden = false; $('aiNotesText').textContent = 'Prof. Fern is writing your study notes...';
+    const prompt = `You are Professor Fern, a plant science teacher. Write concise, accurate study notes in Markdown for this lesson, for a beginner plant breeder.\n\n${lessonContext()}\n\nThe student's own notes so far (keep their ideas, correct any mistakes gently):\n${$('notes').value || '(none yet)'}\n\nFormat: start with "## Study notes: ${lesson().title}", then short sections with bullet points, **bold** key terms, a small "Key terms" glossary, and end with "### Remember for the quiz" (3-5 bullets). Under 350 words. Output only the Markdown.`;
+    try {
+      const { text } = await sample(prompt, { onText: ({ text }) => { $('aiNotesText').textContent = text; } });
+      $('aiNotesText').textContent = text;
+    } catch (err) { $('aiNotesText').textContent = err?.text || errCopy(err?.code); }
+    btn.disabled = false;
+  };
+  $('aiNotesAdd').onclick = () => { appendNote($('aiNotesText').textContent); $('aiNotesOut').hidden = true; toast('Study notes added'); };
+  $('aiNotesDrop').onclick = () => { $('aiNotesOut').hidden = true; };
+});
+async function aiQuiz(sample) {
+  const btn = $('qAi'), msg = $('qAiMsg');
+  btn.disabled = true; msg.textContent = 'Prof. Fern is writing new questions...'; gesture('think');
+  const prompt = `Write 5 new multiple-choice quiz questions for a beginner on this plant science lesson. Make them different from simple recall where possible (apply the idea to a breeding or lab situation). Each has 4 options and exactly one correct answer. Be scientifically accurate.\n\n${lessonContext()}\n\nReturn only JSON: an array of 5 objects {"q": string, "o": [4 strings], "a": index 0-3 of the correct option, "why": one-sentence explanation}.`;
+  try {
+    const r = await sample.json(prompt, { cache: false });
+    const qs = (Array.isArray(r) ? r : r?.questions || []).filter(x => x && typeof x.q === 'string' && Array.isArray(x.o) && x.o.length >= 2 && Number.isInteger(x.a) && x.a >= 0 && x.a < x.o.length).slice(0, 5).map(x => ({ t: 'mc', q: x.q, o: x.o.map(String), a: x.a, why: String(x.why || '') }));
+    if (qs.length < 3) throw { code: 'bad' };
+    startQuiz(qs);
+  } catch (err) { if (msg) msg.textContent = errCopy(err?.code); btn.disabled = false; }
+}
+
+/* ---------- boot ---------- */
+loadLesson(0);
+</script>
