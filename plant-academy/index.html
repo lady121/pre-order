@@ -182,6 +182,12 @@ text { font-family: var(--font-body); fill: var(--fg); }
 .caption { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; padding: 14px 16px 16px; border-top: 1px solid var(--line); background: var(--panel-2); }
 .who { font-family: var(--font-display); font-weight: 800; color: var(--green-ink); font-size: 14px; text-transform: uppercase; letter-spacing: .06em; padding-top: 3px; }
 .say { font-size: 1.12rem; line-height: 1.55; max-width: 72ch; min-height: 3.1em; margin: 0; }
+.refs { grid-column: 2; display: flex; flex-direction: column; gap: 6px; }
+.refs:empty { display: none; }
+.ref { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 14.5px; border-radius: 10px; padding: 7px 10px; background: var(--pollen-soft); }
+.ref.back { background: var(--green-soft); }
+.ref b { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; }
+.ref button { border: 0; background: none; padding: 0; font-weight: 700; color: var(--green-ink); text-decoration: underline; text-underline-offset: 3px; }
 .say-actions { grid-column: 2; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .stepcount { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
 .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -313,6 +319,7 @@ textarea#notes { width: 100%; min-height: 300px; resize: vertical; border: 1px s
         <div class="caption" id="captionBox">
           <div class="who">Prof. Fern</div>
           <p class="say" id="say" aria-live="polite"></p>
+          <div class="refs" id="refs"></div>
           <div class="say-actions">
             <span class="stepcount" id="stepCount"></span>
             <button class="btn small" id="pinBtn" title="Add this key point to your notebook">Pin key point to notes</button>
@@ -597,7 +604,7 @@ const LESSONS = [
     { g: 'point', p: 'petiole', say: "The petiole is the leaf stalk. It joins the blade to the stem at a node and can turn the leaf toward the light.", n: 'Petiole = leaf stalk connecting blade to stem.' },
     { g: 'circle', p: 'axillary-bud', say: "Tucked in the angle between petiole and stem is an axillary bud. It is a dormant side shoot. Pinch off the top of a plant and these buds wake up, which is why pruning makes plants bushier.", n: 'Axillary (lateral) bud sits in the leaf axil; it is a dormant side shoot that grows when the tip is removed.' },
     { g: 'point', p: 'apical-bud', say: "At the very top is the apical bud, the growing tip. It produces the hormone auxin, which keeps the axillary buds asleep. This effect is called apical dominance.", n: 'Apical bud = shoot tip. It makes auxin, which suppresses axillary buds (apical dominance).' },
-    { g: 'highlight', p: 'flower', say: "Finally, the flower: the reproductive organ, and the place where a breeder does most of the work. We'll take one apart in lesson four. Ready for a quick quiz?", n: 'The flower is the reproductive organ, where crosses are made.' }
+    { g: 'highlight', p: 'flower', say: "Finally, the flower: the reproductive organ, and the place where a breeder does most of the work. Ready for a quick quiz?", n: 'The flower is the reproductive organ, where crosses are made.' }
   ],
   quiz: [
     { t: 'tap', q: 'Tap a node on the plant.', part: 'node', why: 'Nodes are the bands on the stem where leaves and buds attach.' },
@@ -639,6 +646,7 @@ const LESSONS = [
     { g: 'circle', p: 'chloroplast', say: "Chloroplasts are where photosynthesis happens. They carry their own small DNA, and in most crops they pass down only through the mother, through the seed parent.", n: 'Chloroplasts do photosynthesis, have their own DNA, and are usually inherited from the mother (seed parent).' },
     { g: 'circle', p: 'mitochondrion', say: "Mitochondria release energy from sugar. They are also mostly inherited from the mother, and certain mitochondrial genes cause male sterility, which seed companies use to make hybrid seed.", n: 'Mitochondria release energy (respiration). Mitochondrial genes can cause cytoplasmic male sterility (CMS), used for hybrid seed.' },
     { g: 'highlight', p: 'vacuole', say: "The big central vacuole stores water and pushes outward on the wall. That pressure, called turgor, keeps the plant firm. When it drops, the plant wilts.", n: 'Central vacuole stores water; its turgor pressure keeps the plant firm (wilting = lost turgor).' },
+    { g: 'think', say: "Not every cell looks like this one. Plants have specialised cell types. Epidermal cells form the skin of leaves and roots, and root hairs and guard cells are both modified epidermal cells. Xylem and phloem cells are built for transport. Meristem cells, at the root and shoot tips, are small and keep dividing.", n: 'Specialised cell types: epidermal cells (skin; root hairs and guard cells are modified epidermal cells), mesophyll cells (photosynthesis), xylem and phloem cells (transport), meristem cells (small, dividing, at the tips).' },
     { g: 'cheer', say: "Here's the big idea for tissue culture. Many plant cells are totipotent: one cell can, in the right conditions, regrow an entire plant. Quiz time!", n: 'Totipotency: a single plant cell can regenerate a whole plant. This is the basis of tissue culture.' }
   ],
   quiz: [
@@ -646,6 +654,7 @@ const LESSONS = [
     { t: 'mc', q: 'What is totipotency?', o: ['A cell dividing very fast', 'A single cell being able to regenerate a whole plant', 'A cell with two nuclei', 'A cell without a wall'], a: 1, why: 'Totipotency is the ability of one cell to regrow a complete plant.' },
     { t: 'tap', q: 'Tap the structure whose pressure keeps the plant from wilting.', part: 'vacuole', why: 'The central vacuole creates turgor pressure.' },
     { t: 'mc', q: 'In most crops, chloroplast DNA is inherited from...', o: ['The pollen parent', 'The seed (mother) parent', 'Both parents equally', 'Neither parent'], a: 1, why: 'Chloroplasts usually come through the egg cell, so they are maternally inherited.' },
+    { t: 'mc', q: 'Root hairs and guard cells are both modified...', o: ['Epidermal cells', 'Xylem cells', 'Pollen cells', 'Callus cells'], a: 0, why: 'Both develop from the epidermis, the plant\'s outer skin of cells.' },
     { t: 'mc', q: 'The plant cell wall is mostly made of...', o: ['Cellulose', 'Protein', 'Starch', 'Chitin'], a: 0, why: 'Cellulose fibres make up most of the cell wall.' }
   ] },
 
@@ -740,6 +749,31 @@ const LESSONS = [
     { t: 'tap', q: 'Tap the stage where plants are slowly adjusted to normal humidity.', part: 'acclimate', why: 'Acclimatisation hardens plants off under a dome.' }
   ] }
 ];
+
+/* ---------- links between lessons ----------
+   Words in a step that belong to another lesson. A later lesson gets a spoken
+   "we'll learn more later" the first time it comes up; an earlier one gets a recap link. */
+const TOPICS = [
+  { phrase: 'roots, stems, nodes and buds', re: /\b(nodes?|internodes?|axillary bud|apical bud|apical dominance|taproot)\b/i },
+  { phrase: 'what happens inside a leaf', re: /\b(xylem|phloem|photosynthe\w*|stomat[ae]\w*|transpiration|mesophyll)\b/i },
+  { phrase: 'cells', re: /\b(cells?|epidermal|cellulose|nucleus|chromosomes?|chloroplasts?|mitochondria|totipoten\w*|protoplasts?|turgor)\b/i },
+  { phrase: 'flowers and pollination', re: /\b(flowers?|pollinat\w*|pollen|anthers?|stigma|ovary|ovules?|emasculat\w*)\b/i },
+  { phrase: 'genes and inheritance', re: /\b(genes?|genetic|alleles?|dominant|recessive|heterozygous|homozygous|genotype|phenotype|inherited|segregat\w*)\b/i },
+  { phrase: 'making crosses and selecting plants', re: /\b(cross(es|ing)?(?!-)|hybrids?|heterosis|backcross\w*|pure lines?|F1|F2|select(s|ing)? for)\b/i },
+  { phrase: 'tissue culture', re: /\b(tissue[ -]culture\w*|explants?|callus|protoplasts?|auxin|cytokinin|meristems?|micropropagation)\b/i }
+];
+LESSONS.forEach((l, li) => {
+  const announced = new Set();
+  l.steps.forEach(s => {
+    s.fwd = []; s.back = []; s.announce = [];
+    TOPICS.forEach((t, j) => {
+      if (j === li || !t.re.test(s.say)) return;
+      if (j > li) { s.fwd.push(j); if (!announced.has(j)) { announced.add(j); s.announce.push(j); } }
+      else s.back.push(j);
+    });
+  });
+});
+const laterLine = j => `We'll learn more about ${TOPICS[j].phrase} in Lesson ${j + 1}, ${LESSONS[j].title}.`;
 
 /* ---------- state ---------- */
 const $ = id => document.getElementById(id);
@@ -901,16 +935,28 @@ function showStep(i, talk) {
   S.si = i; S.seen.add(i);
   const s = steps[i];
   $('say').textContent = s.say;
+  renderRefs(s);
   $('stepCount').textContent = `Step ${i + 1} of ${steps.length}`;
   $('prevBtn').disabled = i === 0;
   $('nextBtn').disabled = i === steps.length - 1;
   renderDots();
   gesture(s.g, s.p);
-  if (talk) speak(s.say, () => {
+  if (talk) speak([s.say, ...s.announce.map(laterLine)].join(' '), () => {
     if (!S.playing) return;
     const tok = S.token;
     setTimeout(() => { if (tok !== S.token || !S.playing) return; if (S.si < steps.length - 1) showStep(S.si + 1, true); else { S.playing = false; setPlayBtn(); startQuiz(); } }, 800);
   });
+}
+function renderRefs(s) {
+  const box = $('refs'); box.innerHTML = '';
+  const add = (cls, label, text, j) => {
+    const d = document.createElement('div'); d.className = 'ref ' + cls;
+    d.innerHTML = `<b>${label}</b><span>${text}</span>`;
+    const b = document.createElement('button'); b.textContent = cls === 'back' ? 'Review it' : 'Peek ahead';
+    b.onclick = () => loadLesson(j); d.appendChild(b); box.appendChild(d);
+  };
+  s.fwd.forEach(j => add('fwd', 'Coming up', `More on ${TOPICS[j].phrase} in Lesson ${j + 1}: ${LESSONS[j].title}`, j));
+  s.back.forEach(j => add('back', 'Recap', `${TOPICS[j].phrase[0].toUpperCase() + TOPICS[j].phrase.slice(1)}: Lesson ${j + 1}, ${LESSONS[j].title}`, j));
 }
 function setPlayBtn() {
   const b = $('playBtn');
@@ -1021,7 +1067,7 @@ function appendNote(text) {
   notes[lesson().id] = t.value; store.set('notes', notes);
   t.scrollTop = t.scrollHeight;
 }
-$('pinBtn').onclick = () => { appendNote('- ' + lesson().steps[S.si].n); toast('Pinned to your notebook'); showTab('notes'); };
+$('pinBtn').onclick = () => { const s = lesson().steps[S.si]; appendNote('- ' + s.n + s.fwd.map(j => ` (more in Lesson ${j + 1}: ${LESSONS[j].title})`).join('')); toast('Pinned to your notebook'); showTab('notes'); };
 $('buildNotes').onclick = () => { appendNote(`## Key points: ${lesson().title}\n` + lesson().steps.map(s => '- ' + s.n).join('\n')); toast('Key points added'); };
 function allNotesMd() {
   let md = `# Professor Fern's Greenhouse: my notes\n\n`;
@@ -1078,7 +1124,8 @@ function renderSuggest() {
 }
 function lessonContext() {
   const l = lesson();
-  return `Lesson: "${l.title}" (${l.tag}).\nDiagram parts (id: name): ${Object.entries(l.parts).map(([k, v]) => `${k}: ${v}`).join('; ')}.\nLecture key points:\n${l.steps.map(s => '- ' + s.n).join('\n')}`;
+  const outline = LESSONS.map((x, i) => `Lesson ${i + 1}: ${x.title}${i === S.li ? ' (CURRENT)' : i < S.li ? ' (earlier)' : ' (later)'}`).join('\n');
+  return `Course outline:\n${outline}\nIf the student asks about something a later lesson covers, answer briefly and tell them which lesson goes deeper ("We'll go into that in Lesson N"). If it's from an earlier lesson, say it's a recap of Lesson N. If no lesson in the course covers it, say it goes beyond this course for now.\n\nLesson: "${l.title}" (${l.tag}).\nDiagram parts (id: name): ${Object.entries(l.parts).map(([k, v]) => `${k}: ${v}`).join('; ')}.\nLecture key points:\n${l.steps.map(s => '- ' + s.n).join('\n')}`;
 }
 const errCopy = c => c === 'not_granted' ? 'Prof. Fern needs permission to use Claude for this. Allow it when asked.' : c === 'rate_limited' ? 'Too many questions at once. Wait a moment and try again.' : 'Prof. Fern could not answer just now. Try again in a moment.';
 
