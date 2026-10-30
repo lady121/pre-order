@@ -1,0 +1,6 @@
+numpy>=1.26
+pandas>=2.0
+# Optional: real market data
+yfinance>=0.2
+# Optional: Claude-powered strategist agent
+anthropic>=0.70
